@@ -31,15 +31,19 @@ service.interceptors.response.use(
     // code不为0，为失败
     if (res.code !== 0) {
       const errs = res.errors
-      let message = "<ul style='padding-left: 0'>"
+      let message
+      if (errs === undefined) {
+        message = res.message || "Error"
+      } else {
+        message = '<ul style=\'padding-left: 0\'>'
 
-      for (const item in errs) {
-        for (const item2 in errs[item]) {
-          message += "<li>" + errs[item][item2] + "</li>"
+        for (const item in errs) {
+          for (const item2 in errs[item]) {
+            message += "<li>" + errs[item][item2] + "</li>"
+          }
         }
+        message += "</ul>"
       }
-      message += "</ul>"
-
       Notification({
         title: res.message || 'Error',
         message,

@@ -1,23 +1,23 @@
-import request from '@/utils/request'
+import request from "@/utils/request"
 
 export function login(data) {
   return request({
-    url: '/login',
-    method: 'post',
+    url: "/login",
+    method: "post",
     data
   })
 }
 
 export function getInfo() {
   return request({
-    url: '/account',
-    method: 'get'
+    url: "/account",
+    method: "get"
   })
 }
 
 export function logout() {
   return request({
-    url: '/logout',
-    method: 'DELETE'
+    url: "/logout",
+    method: "DELETE"
   })
 }

@@ -63,3 +63,31 @@ div:focus {
 .app-container {
   padding: 20px;
 }
+
+// 头部筛选条
+.filter-container {
+  padding-bottom: 10px;
+  overflow: hidden;
+
+  .filter-left {
+    float: left;
+  }
+
+  .filter-right {
+    float: right;
+  }
+}
+
+.post-container {
+  .sub-navbar {
+    padding: 0 40px;
+    text-align: right;
+    height: 58px;
+    line-height: 58px;
+    background: #d0d0d0;
+  }
+
+  .form-container {
+    padding: 0 40px;
+  }
+}

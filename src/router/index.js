@@ -27,43 +27,32 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard' }
     }]
   },
 
   {
-    path: '/example',
+    path: "/admin_group",
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
+    redirect: '/admin_group/list',
+    meta: { title: "管理员组", icon: "el-icon-s-check" },
+    children: [{
+      path: "add",
+      name: "AdminGroupAdd",
+      component: () => import("@/views/admin-group/add"),
+      meta: { title: "创建管理员组" }
+    }, {
+      path: "list",
+      name: "AdminGroupList",
+      component: () => import("@/views/admin-group/list"),
+      meta: { title: "管理员组列表" }
+    }, {
+      path: "edit/:id(\\d+)",
+      name: "AdminGroupEdit",
+      component: () => import("@/views/admin-group/edit"),
+      meta: { title: "编辑管理员组", activeMenu: '/admin_group/list' },
+      hidden: true
+    }]
   },
 
   {
@@ -121,17 +110,6 @@ export const constantRoutes = [
         component: () => import('@/views/nested/menu2/index'),
         name: 'Menu2',
         meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
       }
     ]
   },

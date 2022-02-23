@@ -34,7 +34,7 @@ export function details(id) {
   })
 }
 
-// 删除管理员组详情
+// 删除管理员组
 export function del(id) {
   return request({
     url: "/admin_group/" + id,

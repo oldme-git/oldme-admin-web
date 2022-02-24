@@ -46,7 +46,7 @@ service.interceptors.response.use(
         message += "</ul>"
       }
       Notification({
-        title: res.message || 'Error',
+        title: "失败",
         message,
         type: 'error',
         duration: 5 * 1000,

@@ -261,7 +261,7 @@ export default {
           // 发起请求
           if (this.isEdit) {
             // 编辑请求
-            update(formData.id, formData).then((response) => {
+            update(formData.id, formData).then(response => {
               const { message } = response
               this.$notify({
                 title: message,
@@ -272,7 +272,7 @@ export default {
             })
           } else {
             // 添加请求
-            create(formData).then((response) => {
+            create(formData).then(response => {
               const { message } = response
               this.$notify({
                 title: message,

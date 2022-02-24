@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Notification } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import { logger } from 'runjs/lib/common'
 
 // create an axios instance
 const service = axios.create({
@@ -57,9 +58,20 @@ service.interceptors.response.use(
   },
   error => {
     const err = error.response
+    console.log(err)
+    let title, message
+
+    if (err === undefined) {
+      title = error.message
+      message = error.message
+    } else {
+      title = err.status
+      message = err.data.message
+    }
+
     Notification({
-      title: err.status,
-      message: err.data.message || error.message,
+      title,
+      message,
       type: 'error',
       duration: 5 * 1000
     })

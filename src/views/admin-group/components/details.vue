@@ -48,7 +48,7 @@
 
 <script>
 import Sticky from '@/components/Sticky'
-import { action, create, details } from '@/api/admin-group'
+import { action, create, update, details } from '@/api/admin-group'
 
 export default {
   name: 'AdminGroupDetails',
@@ -122,13 +122,14 @@ export default {
         }
 
         if (this.isEdit) {
+          // 如果是编辑状态下，则渲染数据
           const id = this.$route.params.id
           if (id == 1) {
             // 超级管理员组不允许修改
-            this.$router.push("/admin_group/list")
+            this.$router.push('/admin_group/list')
             this.$notify({
-              title: "权限不足",
-              message: "超级管理员组不允许修改",
+              title: '权限不足',
+              message: '超级管理员组不允许修改',
               duration: 5000,
               type: 'error'
             })
@@ -136,6 +137,9 @@ export default {
 
           details(id).then(response => {
             const { data } = response
+            let randNumber = 0
+            let writeNumber = 0
+
             // 根据rules渲染checkData
             const rules = data.rules
             for (const value in checkData) {
@@ -144,15 +148,24 @@ export default {
               if (rule === 6) {
                 checkData[value].rand = true
                 checkData[value].write = true
+                randNumber++
+                writeNumber++
                 continue
               }
               if (rule === 4) {
                 checkData[value].rand = true
+                randNumber++
               }
             }
-            // this.handleWriteItem()
-            // this.handleRandItem()
             this.formData = data
+            // 获取所有操作的个数
+            const checkAllNumber = checkData.length
+            // // 改变读全选按钮状态
+            this.rand.all = randNumber === checkAllNumber
+            this.rand.isIndeterminate = !(randNumber === 0 || randNumber === checkAllNumber)
+            // // 改变写全选按钮状态
+            this.write.all = writeNumber === checkAllNumber
+            this.write.isIndeterminate = !(writeNumber === 0 || writeNumber === checkAllNumber)
           })
         }
         this.checkData = checkData
@@ -245,17 +258,31 @@ export default {
           }
           const formData = this.formData
           formData.rules = JSON.stringify(actionObj)
-          // 提交请求
-          create(formData).then((response) => {
-            const { message } = response
-            this.$notify({
-              title: message,
-              message: '管理员组添加成功',
-              duration: 5000,
-              type: 'success'
+          // 发起请求
+          if (this.isEdit) {
+            // 编辑请求
+            update(formData.id, formData).then((response) => {
+              const { message } = response
+              this.$notify({
+                title: message,
+                message: '管理员组编辑成功',
+                duration: 5000,
+                type: 'success'
+              })
             })
-            this.onCancel()
-          })
+          } else {
+            // 添加请求
+            create(formData).then((response) => {
+              const { message } = response
+              this.$notify({
+                title: message,
+                message: '管理员组添加成功',
+                duration: 5000,
+                type: 'success'
+              })
+            })
+          }
+          this.onCancel()
         }
       })
     },

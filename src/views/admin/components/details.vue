@@ -86,7 +86,9 @@ export default {
       // 表单验证规则
       rules: {
         group_id: [{ required: true, trigger: 'blur', message: '请选择管理员组' }],
-        username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
+        username: [
+          { required: true, trigger: 'blur', message: '请输入用户名' },
+          { min: 2, trigger: 'blur', message: '用户名至少2个字符' }],
         password: [{ required: true, trigger: 'blur', pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/, message: "密码 至少包含数字和英文，长度6-20，不能使用特殊字符和中文字符" }]
       },
       // form数据
@@ -207,6 +209,7 @@ export default {
                 duration: 5000,
                 type: 'success'
               })
+              this.onCancel()
             }).catch(error=>{})
           } else {
             // 添加请求
@@ -218,9 +221,9 @@ export default {
                 duration: 5000,
                 type: 'success'
               })
+              this.onCancel()
             }).catch(error=>{})
           }
-          this.onCancel()
         }
       })
     },

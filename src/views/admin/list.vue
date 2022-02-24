@@ -50,6 +50,7 @@
     </el-table>
     <div class="pagination-container">
       <el-pagination
+          :hide-on-single-page="hidePage"
           background
           layout="prev, pager, next, total"
           :current-page="param.page"
@@ -76,6 +77,8 @@ export default {
       },
       // 管理员组列表
       glist: [],
+      // 是否隐藏分页条
+      hidePage: true,
       // 查询条件配置
       param: {
         page: 1,
@@ -119,6 +122,10 @@ export default {
       list({ page, size, group_id, status }).then((response) => {
         const { data } = response
         this.data = data
+        // 条数不够，隐藏分页条
+        if (data.total <= size) {
+          this.hidePage = true
+        }
       })
     },
     // 改变页数

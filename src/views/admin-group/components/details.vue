@@ -7,10 +7,10 @@
       </sticky>
       <div class="form-container">
         <el-form-item label="管理员组名称" prop="name">
-          <el-input v-model="formData.name" type="text" :maxlength="20" autocomplete="off"/>
+          <el-input v-model="formData.name" type="text" :maxlength="10" autocomplete="off"/>
         </el-form-item>
         <el-form-item label="简介" prop="description">
-          <el-input v-model="formData.description" type="textarea" :maxlength="200" autocomplete="off"/>
+          <el-input v-model="formData.description" type="textarea" :maxlength="100" autocomplete="off"/>
         </el-form-item>
         <el-form-item label="操作权限" prop="action">
           <el-table :data="checkData" border>
@@ -79,8 +79,13 @@ export default {
     return {
       // 表单验证规则
       rules: {
-        name: [{ required: true, trigger: 'blur', message: '请输入管理员组名称' }],
-        description: [{ required: true, trigger: 'blur', message: '请输入简介' }],
+        name: [
+          { required: true, trigger: 'blur', message: '请输入管理员组名称' },
+          { min: 2, trigger: 'blur', message: '管理员组名称至少2个字符' }
+        ],
+        description: [
+          { required: true, trigger: 'blur', message: '请输入简介' },
+          { min: 2, trigger: 'blur', message: '简介至少2个字符' }],
         action: [{ trigger: 'blur', validator: actionRules }]
       },
       // form数据
@@ -269,6 +274,8 @@ export default {
                 duration: 5000,
                 type: 'success'
               })
+              this.onCancel()
+            }).catch(error => {
             })
           } else {
             // 添加请求
@@ -280,9 +287,10 @@ export default {
                 duration: 5000,
                 type: 'success'
               })
+              this.onCancel()
+            }).catch(error => {
             })
           }
-          this.onCancel()
         }
       })
     },

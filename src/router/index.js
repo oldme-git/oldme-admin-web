@@ -55,6 +55,30 @@ export const constantRoutes = [
     }]
   },
 
+  {
+    path: "/admin",
+    component: Layout,
+    redirect: '/admin/list',
+    meta: { title: "管理员", icon: "el-icon-user-solid" },
+    children: [{
+      path: "add",
+      name: "AdminAdd",
+      component: () => import("@/views/admin/add"),
+      meta: { title: "新增管理员" }
+    }, {
+      path: "list",
+      name: "AdminList",
+      component: () => import("@/views/admin/list"),
+      meta: { title: "管理员列表" }
+    }, {
+      path: "edit/:id(\\d+)",
+      name: "AdminEdit",
+      component: () => import("@/views/admin/edit"),
+      meta: { title: "编辑管理员", activeMenu: '/admin/list' },
+      hidden: true
+    }]
+  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

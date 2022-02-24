@@ -69,13 +69,18 @@ div:focus {
   padding-bottom: 10px;
   overflow: hidden;
 
-  .filter-left {
-    float: left;
-  }
+  //.filter-left {
+  //  float: left;
+  //}
+  //
+  //.filter-right {
+  //  float: right;
+  //}
+}
 
-  .filter-right {
-    float: right;
-  }
+.pagination-container {
+  text-align: center;
+  margin-top: 20px;
 }
 
 .post-container {
@@ -113,6 +118,7 @@ div:focus {
     line-height: 160px;
     text-align: center;
   }
+
   .avatar {
     width: 160px;
     height: 160px;
@@ -123,3 +129,24 @@ div:focus {
 .w-100 {
   width: 100%;
 }
+
+.c-primary {
+  color: #409EFF;
+}
+
+.c-success {
+  color: #67C23A;
+}
+
+.c-warning {
+  color: #E6A23C;
+}
+
+.c-danger {
+  color: #F56C6C;
+}
+
+.c-info {
+  color: #909399;
+}
+

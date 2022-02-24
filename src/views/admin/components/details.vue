@@ -34,30 +34,31 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="昵称" prop="nickname">
-              <el-input v-model="formData.nickname" :maxlength="100" autocomplete="off"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
             <el-form-item label="登录密码" prop="password">
               <el-input v-model="formData.password" :maxlength="100" autocomplete="off"/>
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="昵称" prop="nickname">
+              <el-input v-model="formData.nickname" :maxlength="100" autocomplete="off"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item label="头像" prop="cover">
-          <el-upload
-              class="avatar-uploader"
-              :action="upload.url"
-              :headers="upload.header"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-              name="img">
-            <img v-if="formData.cover" :src="formData.cover" class="avatar" alt="">
+          <el-button @click="cropShow" class="avatar-uploader">
+            <img v-if="formData.avatar" :src="formData.avatar" class="avatar" alt="">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+          </el-button>
+          <crop-upload
+              ref="upload"
+              field="img"
+              @crop-upload-success="cropSuccess"
+              v-model="crop.show"
+              :url="crop.url"
+              :headers="crop.header"
+          ></crop-upload>
         </el-form-item>
       </div>
     </el-form>
@@ -68,10 +69,12 @@
 import Sticky from '@/components/Sticky'
 import { create, update, details } from '@/api/admin'
 import { list } from '@/api/admin-group'
+import cropUpload from 'vue-image-crop-upload/upload-2.vue'
+import { url, header } from '@/utils/upload'
 
 export default {
   name: 'AdminDetails',
-  components: { Sticky },
+  components: { Sticky, cropUpload },
   props: {
     isEdit: {
       type: Boolean,
@@ -82,8 +85,9 @@ export default {
     return {
       // 表单验证规则
       rules: {
-        name: [{ required: true, trigger: 'blur', message: '请输入管理员组名称' }],
-        description: [{ required: true, trigger: 'blur', message: '请输入简介' }]
+        group_id: [{ required: true, trigger: 'blur', message: '请选择管理员组' }],
+        username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
+        password: [{ required: true, trigger: 'blur', pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/, message: "密码 至少包含数字和英文，长度6-20，不能使用特殊字符和中文字符" }]
       },
       // form数据
       formData: {
@@ -91,17 +95,16 @@ export default {
         group_id: '',
         username: '',
         password: '',
-        cover: '',
+        avatar: '',
         nickname: '',
         status: '1'
       },
       // 管理员组
       adminGroup: {},
-      upload: {
-        url: "https://api.oldme.cn/admin/upload/img",
-        header: {
-          Authorization: "Bearer 36|Tobj4JiQDG3OK2jEssFHuDvNk9Zm4RT3l1bk7mOH"
-        }
+      crop: {
+        url: "",
+        header: {},
+        show: false
       }
     }
   },
@@ -109,29 +112,37 @@ export default {
     this.load()
   },
   methods: {
-    handleAvatarSuccess(res) {
-      const { data } = res
-      this.formData.cover = data;
+    // 打开上传头像
+    cropShow() {
+      this.$refs.upload.setStep(1)
+      this.crop.show = true
     },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+    // 上传头像成功后
+    cropSuccess(response) {
+      const { code, message, data} = response
+      if (code === 0) {
+        this.formData.avatar = data
+      } else {
+        this.$notify({
+          title: "失败",
+          message,
+          duration: 5000,
+          type: 'success'
+        })
       }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isJPG && isLt2M;
+      this.crop.show = false
     },
     // 获取所有操作列表
     load() {
+      // 读取管理员组
       list().then(response => {
         const { data } = response
         this.adminGroup = data
       })
-      // 读取管理员组
+      // 读取上传图片的凭据
+      this.crop.url = url()
+      this.crop.header = header()
+
       if (this.isEdit) {
         // 如果是编辑状态下，则渲染数据
         const id = this.$route.params.id
@@ -192,22 +203,22 @@ export default {
               const { message } = response
               this.$notify({
                 title: message,
-                message: '管理员组编辑成功',
+                message: '管理员编辑成功',
                 duration: 5000,
                 type: 'success'
               })
-            })
+            }).catch(error=>{})
           } else {
             // 添加请求
             create(formData).then(response => {
               const { message } = response
               this.$notify({
                 title: message,
-                message: '管理员组添加成功',
+                message: '管理员添加成功',
                 duration: 5000,
                 type: 'success'
               })
-            })
+            }).catch(error=>{})
           }
           this.onCancel()
         }

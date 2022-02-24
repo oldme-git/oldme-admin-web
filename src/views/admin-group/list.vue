@@ -1,13 +1,5 @@
 <template>
   <div class="app-container">
-    <!--    <div class="filter-container">-->
-    <!--      <div class="filter-left">-->
-    <!--        name: {{ name }}-->
-    <!--      </div>-->
-    <!--      <div class="filter-right">-->
-    <!--        <el-button type="primary" @click="add()">添加</el-button>-->
-    <!--      </div>-->
-    <!--    </div>-->
     <el-table :data="data" border style="width: 100%">
       <el-table-column prop="name" label="名称"/>
       <el-table-column prop="description" label="描述"/>
@@ -31,15 +23,13 @@
 </template>
 
 <script>
-import { list, del, details } from '@/api/admin-group'
+import { list, del } from '@/api/admin-group'
 
 export default {
   name: 'AdminGroupList',
   data() {
     return {
-      name: 'admin_group',
-      data: [],
-      detailsDialog: false
+      data: []
     }
   },
   mounted() {

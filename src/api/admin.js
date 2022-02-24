@@ -19,10 +19,11 @@ export function update(id, data) {
 }
 
 // 获取管理员列表
-export function list() {
+export function list(params) {
   return request({
     url: "/admin",
-    method: "get"
+    method: "get",
+    params
   })
 }
 

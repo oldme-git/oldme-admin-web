@@ -2,7 +2,6 @@ import axios from 'axios'
 import { Notification } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-import { logger } from 'runjs/lib/common'
 
 // create an axios instance
 const service = axios.create({
@@ -31,22 +30,35 @@ service.interceptors.response.use(
 
     // code不为0，为失败
     if (res.code !== 0) {
+      // 将后端传来的数据进行整理，message当作title,errors当作message
+      let title = res.message
       const errs = res.errors
       let message
-      if (errs === undefined) {
-        message = res.message || "Error"
-      } else {
-        message = '<ul style=\'padding-left: 0\'>'
 
-        for (const item in errs) {
-          for (const item2 in errs[item]) {
-            message += "<li>" + errs[item][item2] + "</li>"
+      if (errs === undefined) {
+        // 当后端没有errors时。message正常，title为失败
+        message = res.message
+        title = "失败"
+      } else {
+        // 当后端有errors时，是对象时
+        if (typeof errs === "object") {
+          message = '<ul style=\'padding-left: 0\'>'
+
+          for (const item in errs) {
+            for (const item2 in errs[item]) {
+              message += "<li>" + errs[item][item2] + "</li>"
+            }
           }
+          message += "</ul>"
         }
-        message += "</ul>"
+        // 当后端有errors时，是字符串时
+        if (typeof errs === "string") {
+          message = errs
+        }
       }
+
       Notification({
-        title: "失败",
+        title,
         message,
         type: 'error',
         duration: 5 * 1000,

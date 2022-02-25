@@ -137,7 +137,7 @@ export default {
       switch (mod) {
           // 编辑
         case 'edit':
-          this.$router.push('/admin_group/edit/' + id)
+          this.$router.push('/admin/edit/' + id)
           break
           // 删除
         case 'del':

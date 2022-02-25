@@ -22,8 +22,8 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="账号状态" prop="status">
-              <el-radio v-model="formData.status" label="1">正常</el-radio>
-              <el-radio v-model="formData.status" label="0">冻结</el-radio>
+              <el-radio v-model="formData.status" :label="1">正常</el-radio>
+              <el-radio v-model="formData.status" :label="0">冻结</el-radio>
             </el-form-item>
           </el-col>
         </el-row>
@@ -34,8 +34,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="登录密码" prop="password">
-              <el-input v-model="formData.password" :maxlength="100" autocomplete="off"/>
+            <el-form-item label="登录密码" prop="password" :class="isEdit ? '' : 'is-required'">
+              <el-input v-model="formData.password" :maxlength="100" autocomplete="off"
+                        :placeholder="isEdit ? '不填写为不修改' : ''"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -82,6 +84,20 @@ export default {
     }
   },
   data() {
+    // 规则验证
+    const passwordRules = (rule, value, callback) => {
+      const isEdit = this.isEdit
+      if (isEdit && value === undefined) {
+        callback()
+      }
+      const pattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/
+      const valid = pattern.test(value)
+      if (valid) {
+        callback()
+      } else {
+        callback(new Error('密码 至少包含数字和英文，长度6-20，不能使用特殊字符和中文字符'))
+      }
+    }
     return {
       // 表单验证规则
       rules: {
@@ -89,7 +105,7 @@ export default {
         username: [
           { required: true, trigger: 'blur', message: '请输入用户名' },
           { min: 2, trigger: 'blur', message: '用户名至少2个字符' }],
-        password: [{ required: true, trigger: 'blur', pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/, message: "密码 至少包含数字和英文，长度6-20，不能使用特殊字符和中文字符" }]
+        password: [{ validator: passwordRules, trigger: 'blur' }]
       },
       // form数据
       formData: {
@@ -99,12 +115,12 @@ export default {
         password: '',
         avatar: '',
         nickname: '',
-        status: '1'
+        status: 1
       },
       // 管理员组
       adminGroup: {},
       crop: {
-        url: "",
+        url: '',
         header: {},
         show: false
       }
@@ -112,6 +128,15 @@ export default {
   },
   created() {
     this.load()
+  },
+  watch: {
+    formData: {
+      deep: true,
+      handler: function(newV, oldV) {
+        console.log(newV.nickname)
+        console.log(oldV.nickname)
+      }
+    }
   },
   methods: {
     // 打开上传头像
@@ -121,12 +146,12 @@ export default {
     },
     // 上传头像成功后
     cropSuccess(response) {
-      const { code, message, data} = response
+      const { code, message, data } = response
       if (code === 0) {
         this.formData.avatar = data
       } else {
         this.$notify({
-          title: "失败",
+          title: '失败',
           message,
           duration: 5000,
           type: 'success'
@@ -149,11 +174,11 @@ export default {
         // 如果是编辑状态下，则渲染数据
         const id = this.$route.params.id
         if (id == 1) {
-          // 超级管理员组不允许修改
-          this.$router.push('/admin_group/list')
+          // 超级管理员不允许修改
+          this.$router.push('/admin/list')
           this.$notify({
             title: '权限不足',
-            message: '超级管理员组不允许修改',
+            message: '超级管理员不允许修改',
             duration: 5000,
             type: 'error'
           })
@@ -161,35 +186,7 @@ export default {
 
         details(id).then(response => {
           const { data } = response
-          let randNumber = 0
-          let writeNumber = 0
-
-          // 根据rules渲染checkData
-          const rules = data.rules
-          for (const value in checkData) {
-            let item = checkData[value].item
-            let rule = rules[item]
-            if (rule === 6) {
-              checkData[value].rand = true
-              checkData[value].write = true
-              randNumber++
-              writeNumber++
-              continue
-            }
-            if (rule === 4) {
-              checkData[value].rand = true
-              randNumber++
-            }
-          }
           this.formData = data
-          // 获取所有操作的个数
-          const checkAllNumber = checkData.length
-          // // 改变读全选按钮状态
-          this.rand.all = randNumber === checkAllNumber
-          this.rand.isIndeterminate = !(randNumber === 0 || randNumber === checkAllNumber)
-          // // 改变写全选按钮状态
-          this.write.all = writeNumber === checkAllNumber
-          this.write.isIndeterminate = !(writeNumber === 0 || writeNumber === checkAllNumber)
         })
       }
     },
@@ -210,7 +207,8 @@ export default {
                 type: 'success'
               })
               this.onCancel()
-            }).catch(error=>{})
+            }).catch(error => {
+            })
           } else {
             // 添加请求
             create(formData).then(response => {
@@ -222,7 +220,8 @@ export default {
                 type: 'success'
               })
               this.onCancel()
-            }).catch(error=>{})
+            }).catch(error => {
+            })
           }
         }
       })

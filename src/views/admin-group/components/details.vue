@@ -109,6 +109,11 @@ export default {
   created() {
     this.load()
   },
+  watch: {
+    formData() {
+      console.log(1)
+    }
+  },
   methods: {
     // 获取所有操作列表
     load() {

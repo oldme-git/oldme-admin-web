@@ -1,13 +1,13 @@
 <template>
-  <admin-group-details :is-edit="true" />
+  <admin-details :is-edit="true" />
 </template>
 
 <script>
-import AdminGroupDetails from '@/views/admin-group/components/details'
+import AdminDetails from "./components/details"
 
 export default {
-  name: "AdminGroupEdit",
-  components: { AdminGroupDetails }
+  name: "AdminEdit",
+  components: { AdminDetails }
 }
 </script>
 

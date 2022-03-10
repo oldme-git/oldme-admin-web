@@ -58,7 +58,7 @@ export const constantRoutes = [
   {
     path: "/admin",
     component: Layout,
-    redirect: '/admin/list',
+    redirect: "/admin/list",
     meta: { title: "管理员", icon: "el-icon-user-solid" },
     children: [{
       path: "add",
@@ -75,6 +75,30 @@ export const constantRoutes = [
       name: "AdminEdit",
       component: () => import("@/views/admin/edit"),
       meta: { title: "编辑管理员", activeMenu: '/admin/list' },
+      hidden: true
+    }]
+  },
+
+  {
+    path: "/article_category",
+    component: Layout,
+    redirect: "/article_category/list",
+    meta: { title: "文章分组", icon: "el-icon-folder-opened" },
+    children: [{
+      path: "add",
+      name: "ArticleCategoryAdd",
+      component: () => import("@/views/article-category/add"),
+      meta: { title: "新增文章分组" }
+    }, {
+      path: "list",
+      name: "ArticleCategoryList",
+      component: () => import("@/views/article-category/list"),
+      meta: { title: "文章分组列表" }
+    }, {
+      path: "edit/:id(\\d+)",
+      name: "ArticleCategoryEdit",
+      component: () => import("@/views/article-category/edit"),
+      meta: { title: "编辑文章分组", activeMenu: '/admin/list' },
       hidden: true
     }]
   },

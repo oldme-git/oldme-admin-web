@@ -143,6 +143,20 @@ export default {
       list().then(({ data }) => {
         this.categoryList = data
       })
+
+      if (this.isEdit) {
+        // 如果是编辑状态下，则渲染数据
+        const id = this.$route.params.id
+        details(id).then(response => {
+          const { data } = response
+          this.formData = data
+          // 文章分类渲染
+          // 关键词渲染
+          if (this.formData.keywords !== null) {
+            this.keywords = this.formData.keywords.split(",")
+          }
+        })
+      }
     },
     // 打开上传头像
     cropShow() {

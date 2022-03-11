@@ -98,7 +98,7 @@ export const constantRoutes = [
       path: "edit/:id(\\d+)",
       name: "ArticleCategoryEdit",
       component: () => import("@/views/article-category/edit"),
-      meta: { title: "编辑文章分组", activeMenu: '/admin/list' },
+      meta: { title: "编辑文章分组", activeMenu: '/article_category/list' },
       hidden: true
     }]
   },

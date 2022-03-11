@@ -129,15 +129,6 @@ export default {
   created() {
     this.load()
   },
-  watch: {
-    formData: {
-      deep: true,
-      handler: function(newV, oldV) {
-        console.log(newV.nickname)
-        console.log(oldV.nickname)
-      }
-    }
-  },
   methods: {
     // 打开上传头像
     cropShow() {
@@ -154,21 +145,22 @@ export default {
           title: '失败',
           message,
           duration: 5000,
-          type: 'success'
+          type: 'error'
         })
       }
       this.crop.show = false
     },
     // 获取所有操作列表
     load() {
+      // 读取上传图片的凭据
+      this.crop.url = url()
+      this.crop.header = header()
+
       // 读取管理员组
       list().then(response => {
         const { data } = response
         this.adminGroup = data
       })
-      // 读取上传图片的凭据
-      this.crop.url = url()
-      this.crop.header = header()
 
       if (this.isEdit) {
         // 如果是编辑状态下，则渲染数据

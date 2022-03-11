@@ -15,10 +15,11 @@
           <el-col :span="8">
             <el-form-item label="父分类" prop="parent_id">
               <el-select class="w-100" v-model="formData.parent_id" placeholder="请选择">
+                <el-option label="顶级分类" value="0"></el-option>
                 <el-option
                     v-for="item in categoryList"
                     :key="item.id"
-                    :label="item.name"
+                    :label="categoryName(item)"
                     :value="item.id"
                 >
                 </el-option>
@@ -28,8 +29,9 @@
         </el-row>
         <el-row>
           <el-col :span="8">
-              <el-form-item label="关键词" prop="keywords">
-              <el-input v-model="formData.keywords" type="text" :maxlength="100" autocomplete="off"/>
+            <el-form-item label="关键词" prop="keywords">
+              <el-input v-model="formData.keywords" type="text" autocomplete="off" v-show="false"/>
+              <word-input :tags.sync="keywords"></word-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -40,14 +42,14 @@
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item label="简介" prop="description">
+            <el-form-item label="描述" prop="description">
               <el-input v-model="formData.description" type="textarea" :maxlength="200" autocomplete="off" :rows="4"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="缩略图" prop="cover">
           <el-button @click="cropShow" class="avatar-uploader">
-            <img v-if="formData.avatar" :src="formData.avatar" class="avatar" alt="">
+            <img v-if="formData.thumbnail" :src="formData.thumbnail" class="avatar" alt="">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-button>
           <crop-upload
@@ -66,12 +68,14 @@
 
 <script>
 import Sticky from '@/components/Sticky'
+import WordInput from '@/components/WordInput'
 import { create, update, details, list } from '@/api/article-category'
 import cropUpload from 'vue-image-crop-upload/upload-2.vue'
+import { header, url } from '@/utils/upload'
 
 export default {
   name: 'ArticleCategoryDetails',
-  components: { Sticky, cropUpload },
+  components: { Sticky, cropUpload, WordInput },
   props: {
     isEdit: {
       type: Boolean,
@@ -87,18 +91,22 @@ export default {
           { min: 2, trigger: 'blur', message: '文章分类名称至少2个字符' }
         ],
         description: [
-          { required: true, trigger: 'blur', message: '请输入简介' },
-          { min: 2, trigger: 'blur', message: '简介至少2个字符' }]
+          { min: 2, trigger: 'blur', message: '描述至少10个字符' },
+          { max: 200, trigger: 'blur', message: '描述至多200个字符' }
+        ]
       },
       // form数据
       formData: {
         id: '',
         name: '', // 名称
-        parent_id: 0, // 父id
-        description: '', // 简介
+        parent_id: "0", // 父id
+        keywords: "", // 关键词
+        description: "", // 描述
         sort: 0, // 排序，数字越大越靠前
         thumbnail: '' // 缩略图地址
       },
+      // 关键词数组
+      keywords: [],
       // 文章分组列表
       categoryList: [],
       crop: {
@@ -108,12 +116,30 @@ export default {
       }
     }
   },
+  watch: {
+    'keywords'() {
+      // 监听关键词
+      this.formData.keywords = this.keywords.toString()
+    }
+  },
   created() {
     this.load()
   },
   methods: {
+    // 根据等级计算属性，给属性前面加 —
+    categoryName(item) {
+      let str = ""
+      for (let i = 1; i < item.lv; i++) {
+        str += " — "
+      }
+      return str + item.name
+    },
     // 初始化数据
     load() {
+      // 读取上传图片的凭据
+      this.crop.url = url()
+      this.crop.header = header()
+
       list().then(({ data }) => {
         this.categoryList = data
       })
@@ -127,13 +153,13 @@ export default {
     cropSuccess(response) {
       const { code, message, data } = response
       if (code === 0) {
-        this.formData.avatar = data
+        this.formData.thumbnail = data
       } else {
         this.$notify({
           title: '失败',
           message,
           duration: 5000,
-          type: 'success'
+          type: 'error'
         })
       }
       this.crop.show = false
@@ -157,10 +183,8 @@ export default {
             }).catch(error => {
             })
           } else {
-            console.log(formData)
-            return
             // 添加请求
-            create(formData).then(response => {
+            create(this.formData).then(response => {
               const { message } = response
               this.$notify({
                 title: message,
@@ -177,7 +201,7 @@ export default {
     },
     // 取消
     onCancel() {
-      this.$router.push('/admin_group/list')
+      this.$router.push('/article_category/list')
     }
   }
 }

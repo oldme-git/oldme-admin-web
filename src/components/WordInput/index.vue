@@ -1,12 +1,13 @@
 <!--
   单词分割组件
+  tags 传,隔开的字符串或者数组
 -->
 
 <template>
   <div>
     <el-tag
         :key="tag"
-        v-for="tag in tags"
+        v-for="tag in tagsArr"
         closable
         :disable-transitions="false"
         @close="handleClose(tag)"
@@ -34,37 +35,51 @@ export default {
   name: 'WordInput',
   props: {
     tags: {
-      type: Array,
-      default: () => {
+      type: [String, Array],
+      default: ['', function() {
         return []
-      }
+      }]
     }
   },
   data() {
     return {
       inputVisible: false,
-      inputValue: ''
+      inputValue: '',
+      tagsArr: []
+    }
+  },
+  mounted() {
+    this.tagsToArray()
+  },
+  watch: {
+    tags() {
+      // 监听字符串类型，转为数组
+      this.tagsToArray()
+    },
+    tagsArr() {
+      // 监听数组类型，转为字符串
+      this.arrayToTags()
     }
   },
   methods: {
     handleClose(tag) {
-      this.tags.splice(this.tags.indexOf(tag), 1)
+      this.tagsArr.splice(this.tagsArr.indexOf(tag), 1)
     },
     handleInputConfirm() {
       let inputValue = this.inputValue
       // 判断是否已经存在值
-      if (this.tags.indexOf(inputValue) !== -1) {
+      if (this.tagsArr.indexOf(inputValue) !== -1) {
         this.$notify({
-          title: "失败",
-          message: "不能重复添加",
+          title: '失败',
+          message: '不能重复添加',
           duration: 5000,
-          type: "error"
+          type: 'error'
         })
         return
       }
       // 添加
       if (inputValue) {
-        this.tags.push(inputValue)
+        this.tagsArr.push(inputValue)
       }
       this.inputVisible = false
       this.inputValue = ''
@@ -74,6 +89,22 @@ export default {
       this.$nextTick(_ => {
         this.$refs.saveTagInput.$refs.input.focus()
       })
+    },
+    tagsToArray() {
+      if (this.tags.length !== 0) {
+        if (typeof this.tags == 'string') {
+          this.tagsArr = this.tags.split(',')
+        } else {
+          this.tagsArr = this.tags
+        }
+      }
+    },
+    arrayToTags() {
+      if (typeof this.tags == 'string') {
+        this.$emit('update:tags', this.tagsArr.toString())
+      } else {
+        this.$emit('update:tags', this.tagsArr)
+      }
     }
   }
 }

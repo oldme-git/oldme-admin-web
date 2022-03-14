@@ -22,7 +22,7 @@
                          cancel-button-text="取消"
                          icon="el-icon-info"
                          icon-color="red"
-                         title="确定删除文章分类吗？"
+                         title="确定删除文章分类吗？这会一起删除所有的子类！"
                          @onConfirm="handle('del', row.id)"
           >
             <el-button type="warning" size="mini" icon="el-icon-delete" slot="reference">删除</el-button>

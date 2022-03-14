@@ -15,7 +15,7 @@
           <el-col :span="8">
             <el-form-item label="父分类" prop="parent_id">
               <el-select class="w-100" v-model="formData.parent_id" placeholder="请选择">
-                <el-option label="顶级分类" value="0"></el-option>
+                <el-option label="顶级分类" :value="0"></el-option>
                 <el-option
                     v-for="item in categoryList"
                     :key="item.id"
@@ -31,12 +31,12 @@
           <el-col :span="8">
             <el-form-item label="关键词" prop="keywords">
               <el-input v-model="formData.keywords" type="text" autocomplete="off" v-show="false"/>
-              <word-input :tags.sync="keywords"></word-input>
+              <word-input :tags.sync="formData.keywords"></word-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="排序" prop="sort">
-              <el-input v-model="formData.sort" type="number" :min="0" :max="9999999" autocomplete="off"/>
+              <el-input v-model.number="formData.sort" type="number" :min="0" :max="9999999" autocomplete="off"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -90,8 +90,12 @@ export default {
           { required: true, trigger: 'blur', message: '请输入文章分类名称' },
           { min: 2, trigger: 'blur', message: '文章分类名称至少2个字符' }
         ],
+        sort: [
+          { type:"number", min: 0, trigger: 'blur', message: '排序最小为0' },
+          { type:"number", max: 9999999, trigger: 'blur', message: '排序最大为9999999' },
+        ],
         description: [
-          { min: 2, trigger: 'blur', message: '描述至少10个字符' },
+          { min: 10, trigger: 'blur', message: '描述至少10个字符' },
           { max: 200, trigger: 'blur', message: '描述至多200个字符' }
         ]
       },
@@ -99,14 +103,12 @@ export default {
       formData: {
         id: '',
         name: '', // 名称
-        parent_id: "0", // 父id
+        parent_id: 0, // 父id
         keywords: "", // 关键词
         description: "", // 描述
         sort: 0, // 排序，数字越大越靠前
         thumbnail: '' // 缩略图地址
       },
-      // 关键词数组
-      keywords: [],
       // 文章分组列表
       categoryList: [],
       crop: {
@@ -114,12 +116,6 @@ export default {
         header: {},
         show: false
       }
-    }
-  },
-  watch: {
-    'keywords'() {
-      // 监听关键词
-      this.formData.keywords = this.keywords.toString()
     }
   },
   created() {
@@ -149,12 +145,8 @@ export default {
         const id = this.$route.params.id
         details(id).then(response => {
           const { data } = response
-          this.formData = data
           // 文章分类渲染
-          // 关键词渲染
-          if (this.formData.keywords !== null) {
-            this.keywords = this.formData.keywords.split(",")
-          }
+          this.formData = data
         })
       }
     },
@@ -185,7 +177,7 @@ export default {
           // 发起请求
           if (this.isEdit) {
             // 编辑请求
-            update(formData.id, formData).then(response => {
+            update(this.formData.id, this.formData).then(response => {
               const { message } = response
               this.$notify({
                 title: message,

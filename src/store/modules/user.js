@@ -19,8 +19,8 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
-  SET_NAME: (state, name) => {
-    state.name = name
+  SET_NICKNAME: (state, nickname) => {
+    state.nickname = nickname
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
@@ -55,7 +55,7 @@ const actions = {
 
         const { nickname, cover } = data
 
-        commit('SET_NAME', nickname)
+        commit('SET_NICKNAME', nickname)
         commit('SET_AVATAR', cover)
         resolve(data)
       }).catch(error => {

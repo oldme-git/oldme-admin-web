@@ -2,27 +2,19 @@
   <div class="app-container">
     <el-tabs v-model="active" @tab-click="handleClick">
       <el-tab-pane label="基本信息" name="info">
-        <el-form ref="formData">
+        <el-form ref="info" label-width="auto" :label-position="'left'">
           <el-row>
             <el-col :span="8">
               <el-form-item label="昵称" prop="nickname">
-                <el-input :maxlength="100" autocomplete="off" v-model="formData.nickname"/>
+                <el-input :maxlength="100" autocomplete="off" v-model="info.nickname"/>
               </el-form-item>
             </el-col>
           </el-row>
           <el-form-item label="头像" prop="cover">
-            <el-button @click="cropShow" class="avatar-uploader">
-              <img v-if="formData.avatar" :src="formData.avatar" class="avatar" alt="">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-button>
-            <crop-upload
-                ref="upload"
-                field="img"
-                @crop-upload-success="cropSuccess"
-                v-model="crop.show"
-                :url="crop.url"
-                :headers="crop.header"
-            ></crop-upload>
+            <crop :img.sync="info.avatar"></crop>
+          </el-form-item>
+          <el-form-item label="操作">
+            <el-button type="primary">确认</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -32,38 +24,30 @@
 </template>
 
 <script>
-import cropUpload from 'vue-image-crop-upload/upload-2.vue'
-import { url, header } from '@/utils/upload'
+import Crop from '@/components/Crop'
 
 export default {
   name: 'Account',
   components: {
-    cropUpload
+    Crop
   },
   data() {
     return {
-      active: 'info',
-      formData: {
-        nickname: '',
-        avatar: ''
-      },
-      crop: {
-        url: '',
-        header: {},
-        show: false
+      active: "info",
+      info: {
+        nickname: "",
+        avatar: ""
       }
     }
   },
   mounted() {
-    // 读取上传图片的凭据
-    this.crop.url = url()
-    this.crop.header = header()
-
     // 初始化vuex中的数据
-    this.formData.nickname = this.$store.getters.nickname
-    this.formData.avatar = this.$store.getters.avatar
+    this.info.nickname = this.$store.getters.nickname
+    this.info.avatar = this.$store.getters.avatar
   },
   methods: {
+    test() {
+    },
     handleClick(tab, event) {
       console.log(tab, event)
     },
@@ -71,21 +55,6 @@ export default {
     cropShow() {
       this.$refs.upload.setStep(1)
       this.crop.show = true
-    },
-    // 上传头像成功后
-    cropSuccess(response) {
-      const { code, message, data } = response
-      if (code === 0) {
-        this.formData.avatar = data
-      } else {
-        this.$notify({
-          title: '失败',
-          message,
-          duration: 5000,
-          type: 'error'
-        })
-      }
-      this.crop.show = false
     }
   }
 }

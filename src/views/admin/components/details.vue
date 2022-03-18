@@ -48,19 +48,8 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="头像" prop="cover">
-          <el-button @click="cropShow" class="avatar-uploader">
-            <img v-if="formData.avatar" :src="formData.avatar" class="avatar" alt="">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-button>
-          <crop-upload
-              ref="upload"
-              field="img"
-              @crop-upload-success="cropSuccess"
-              v-model="crop.show"
-              :url="crop.url"
-              :headers="crop.header"
-          ></crop-upload>
+        <el-form-item label="头像" prop="avatar">
+          <crop :img.sync="formData.avatar"></crop>
         </el-form-item>
       </div>
     </el-form>
@@ -71,12 +60,12 @@
 import Sticky from '@/components/Sticky'
 import { create, update, details } from '@/api/admin'
 import { list } from '@/api/admin-group'
-import cropUpload from 'vue-image-crop-upload/upload-2.vue'
 import { url, header } from '@/utils/upload'
+import crop from '@/components/Crop'
 
 export default {
   name: 'AdminDetails',
-  components: { Sticky, cropUpload },
+  components: { Sticky, crop },
   props: {
     isEdit: {
       type: Boolean,
@@ -118,44 +107,15 @@ export default {
         status: 1
       },
       // 管理员组
-      adminGroup: {},
-      crop: {
-        url: '',
-        header: {},
-        show: false
-      }
+      adminGroup: {}
     }
   },
   created() {
     this.load()
   },
   methods: {
-    // 打开上传头像
-    cropShow() {
-      this.$refs.upload.setStep(1)
-      this.crop.show = true
-    },
-    // 上传头像成功后
-    cropSuccess(response) {
-      const { code, message, data } = response
-      if (code === 0) {
-        this.formData.avatar = data
-      } else {
-        this.$notify({
-          title: '失败',
-          message,
-          duration: 5000,
-          type: 'error'
-        })
-      }
-      this.crop.show = false
-    },
     // 获取所有操作列表
     load() {
-      // 读取上传图片的凭据
-      this.crop.url = url()
-      this.crop.header = header()
-
       // 读取管理员组
       list().then(response => {
         const { data } = response

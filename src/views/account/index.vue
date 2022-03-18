@@ -66,6 +66,8 @@ export default {
               duration: 5000,
               type: 'success'
             })
+            // 更新信息
+            this.$store.dispatch("user/getInfo")
           }).catch(error => {})
         }
       })

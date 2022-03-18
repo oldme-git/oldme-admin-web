@@ -7,7 +7,7 @@
 -->
 <template>
   <div class="wrap">
-    <el-button class="avatar-uploader" @click="show = true">
+    <el-button class="avatar-uploader" @click="cropShow">
       <img v-if="img" :src="img" class="avatar" alt="">
       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-button>
@@ -62,7 +62,6 @@ export default {
       const { code, message, data } = response
       if (code === 0) {
         this.$emit("update:img", data)
-        this.img = data
       } else {
         this.$notify({
           title: '失败',
@@ -72,7 +71,12 @@ export default {
         })
       }
       this.show = false
-    }
+    },
+    // 打开上传头像
+    cropShow() {
+      this.$refs.upload.setStep(1)
+      this.show = true
+    },
   }
 }
 </script>

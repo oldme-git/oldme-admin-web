@@ -169,12 +169,15 @@ export default {
               duration: 5000,
               type: 'success'
             })
-            this.$store.dispatch('user/logout')
-            this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+            this.logout()
           }).catch(error => {
           })
         }
       })
+    },
+    async logout() {
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 }

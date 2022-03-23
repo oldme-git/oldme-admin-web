@@ -108,6 +108,30 @@ export const constantRoutes = [
     }]
   },
 
+  {
+    path: '/article',
+    component: Layout,
+    redirect: '/article/list',
+    meta: { title: '文章', icon: 'el-icon-folder-opened' },
+    children: [{
+      path: 'add',
+      name: 'ArticleAdd',
+      component: () => import('@/views/article/add'),
+      meta: { title: '新增文章' }
+    }, {
+      path: 'list',
+      name: 'ArticleList',
+      component: () => import('@/views/article/list'),
+      meta: { title: '文章列表' }
+    }, {
+      path: 'edit/:id(\\d+)',
+      name: 'ArticleEdit',
+      component: () => import('@/views/article/edit'),
+      meta: { title: '编辑文章', activeMenu: '/article/list' },
+      hidden: true
+    }]
+  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

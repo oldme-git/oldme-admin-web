@@ -1,12 +1,15 @@
 <template>
   <div class="post-container">
-
+    <tinymce v-model="content" :height="300" />
   </div>
 </template>
 
 <script>
+import Tinymce from '@/components/Tinymce'
+
 export default {
   name: 'ArticleDetails',
+  components: { Tinymce },
   props: {
     isEdit: {
       type: Boolean,
@@ -15,6 +18,9 @@ export default {
   },
   data() {
     return {
+      content: `
+        <p>123</p>
+      `
     }
   },
 }

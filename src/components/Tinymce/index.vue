@@ -166,7 +166,7 @@ export default {
       window.tinymce.get(this.tinymceId).getContent()
     },
     imageSuccessCBK(arr) {
-      arr.forEach(v => window.tinymce.get(this.tinymceId).insertContent(`<img class="wscnph" src="${v.url}" >`))
+      arr.forEach(v => window.tinymce.get(this.tinymceId).insertContent(`<img class="tinymce-rich-img" src="${v.url}" >`))
     }
   }
 }

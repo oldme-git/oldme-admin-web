@@ -71,6 +71,13 @@ export default {
       this.dialogVisible = false
     },
     handleSuccess(response, file) {
+      if (response.code != 0) {
+        this.$notify.error({
+          title: response.message,
+          message: response.errors
+        })
+        return
+      }
       const uid = file.uid
       const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
@@ -92,6 +99,15 @@ export default {
       }
     },
     beforeUpload(file) {
+      // 判读是否为需要的格式
+      let typeArr = ["image/jpeg", "image/png", "image/gif", "image/jpg"]
+      if (typeArr.indexOf(file.type) === -1) {
+        this.$notify.error({
+          title: "文件格式不正确",
+          message: "请上传.jpeg,.png,.gif,.jpg文件格式的图片"
+        })
+        return false
+      }
       const _self = this
       const _URL = window.URL || window.webkitURL
       const fileName = file.uid

@@ -99,7 +99,7 @@ export default {
       }
     },
     beforeUpload(file) {
-      // 判读是否为需要的格式
+      // 判断是否为需要的格式
       let typeArr = ["image/jpeg", "image/png", "image/gif", "image/jpg"]
       if (typeArr.indexOf(file.type) === -1) {
         this.$notify.error({

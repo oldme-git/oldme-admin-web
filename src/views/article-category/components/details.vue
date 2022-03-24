@@ -58,12 +58,12 @@
 <script>
 import Sticky from '@/components/Sticky'
 import WordInput from '@/components/WordInput'
+import Crop from '@/components/Crop'
 import { create, update, details, list } from '@/api/article-category'
-import crop from '@/components/Crop'
 
 export default {
   name: 'ArticleCategoryDetails',
-  components: { Sticky, WordInput, crop },
+  components: { Sticky, WordInput, Crop },
   props: {
     isEdit: {
       type: Boolean,

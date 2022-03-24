@@ -150,3 +150,18 @@ div:focus {
   color: #909399;
 }
 
+.img-uploader {
+  width: 202px !important;
+  height: 186px !important;
+  padding: 12px 20px;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.img-uploader-icon {
+  width: 202px !important;
+  height: 186px !important;
+}

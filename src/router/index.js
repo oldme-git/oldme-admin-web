@@ -112,7 +112,7 @@ export const constantRoutes = [
     path: '/article',
     component: Layout,
     redirect: '/article/list',
-    meta: { title: '文章', icon: 'el-icon-folder-opened' },
+    meta: { title: '文章', icon: 'el-icon-document' },
     children: [{
       path: 'add',
       name: 'ArticleAdd',

@@ -60,12 +60,11 @@
 import Sticky from '@/components/Sticky'
 import { create, update, details } from '@/api/admin'
 import { list } from '@/api/admin-group'
-import { url, header } from '@/utils/upload'
-import crop from '@/components/Crop'
+import Crop from '@/components/Crop'
 
 export default {
   name: 'AdminDetails',
-  components: { Sticky, crop },
+  components: { Sticky, Crop },
   props: {
     isEdit: {
       type: Boolean,

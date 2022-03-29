@@ -1,13 +1,13 @@
 <template>
-  <article-category-details :is-edit="true" />
+  <article-details :is-edit="true" />
 </template>
 
 <script>
-import ArticleCategoryDetails from '@/views/article-category/components/details'
+import ArticleDetails from '@/views/article/components/details'
 
 export default {
-  name: "ArticleCategoryEdit",
-  components: { ArticleCategoryDetails }
+  name: "ArticleEdit",
+  components: { ArticleDetails }
 }
 </script>
 

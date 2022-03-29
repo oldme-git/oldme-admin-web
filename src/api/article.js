@@ -19,10 +19,11 @@ export function update(id, data) {
 }
 
 // 获取文章列表
-export function list() {
+export function list(params) {
   return request({
     url: "/article",
-    method: "get"
+    method: "get",
+    params
   })
 }
 

@@ -111,7 +111,7 @@ import Sticky from '@/components/Sticky'
 import WordInput from '@/components/WordInput'
 import Crop from '@/components/Crop'
 import { url, header } from '@/utils/upload'
-import { create, update } from '@/api/article'
+import { create, update, details } from '@/api/article'
 import { list } from '@/api/article-category'
 
 export default {
@@ -136,7 +136,7 @@ export default {
           { min: 2, max:200, trigger: 'blur', message: '作者限制2-200个字符' },
         ],
         keywords: [
-          { min: 10, max:500, trigger: 'blur', message: '关键词限制10-500个字符' },
+          { min: 2, max:500, trigger: 'blur', message: '关键词限制10-500个字符' },
         ],
         description: [
           { max: 2000, trigger: 'blur', message: '描述至多2000个字符' }
@@ -185,6 +185,19 @@ export default {
       list().then(({ data }) => {
         this.categoryList = data
       })
+      if (this.isEdit) {
+        // 如果是编辑状态下，则渲染数据
+        const id = this.$route.params.id
+
+        details(id).then(response => {
+          const { data } = response
+          // 处理keywords null类型
+          if (data.keywords === null) {
+            data.keywords = ""
+          }
+          this.formData = data
+        })
+      }
     },
     // 上传主图成功
     handleSuccess(response) {
@@ -222,7 +235,7 @@ export default {
               const { message } = response
               this.$notify({
                 title: message,
-                message: '文章分类编辑成功',
+                message: '文章编辑成功',
                 duration: 5000,
                 type: 'success'
               })

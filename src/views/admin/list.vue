@@ -115,17 +115,13 @@ export default {
     },
     // 加载表格列表数据
     list() {
-      const page = this.param.page
-      const size = this.param.size
-      const group_id = this.param.group_id
-      const status = this.param.status
+      let page = this.param.page
+      let size = this.param.size
+      let group_id = this.param.group_id
+      let status = this.param.status
       list({ page, size, group_id, status }).then((response) => {
         const { data } = response
         this.data = data
-        // 条数不够，隐藏分页条
-        if (data.total <= size) {
-          this.hidePage = true
-        }
       })
     },
     // 改变页数

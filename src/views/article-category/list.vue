@@ -1,19 +1,14 @@
 <template>
   <div class="app-container">
-    <el-table :data="data" border style="width: 100%">
-      <el-table-column label="名称">
-        <template slot-scope="{row}">
-          {{ categoryName(row) }}
-        </template>
-      </el-table-column>
-      <el-table-column label="关键词">
+    <el-table :data="data.list" border style="width: 100%">
+      <el-table-column label="名称" prop="name"></el-table-column>
+      <el-table-column label="标签">
         <template slot-scope="{row}">
           <el-tag v-for="item in categoryKeywords(row)" :key="item">
             {{ item }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="sort" label="排序"/>
       <el-table-column label="操作">
         <template slot-scope="{row}">
           <el-button type="success" size="mini" icon="el-icon-edit" @click="handle('edit', row.id)">编辑</el-button>
@@ -54,19 +49,11 @@ export default {
         this.data = data
       })
     },
-    // 根据等级计算属性，给属性前面加 —
-    categoryName(item) {
-      let str = ""
-      for (let i = 1; i < item.lv; i++) {
-        str += " — "
-      }
-      return str + item.name
-    },
     // 关键词转换为数组
     categoryKeywords(item) {
       let arr = []
-      if (item.keywords !== null) {
-        arr = item.keywords.split(",")
+      if (item.tags !== null) {
+        arr = item.tags.split(",")
       }
       return arr
     },

@@ -7,28 +7,33 @@
       </sticky>
       <div class="form-container">
         <el-row>
-          <el-col :span="8">
-            <el-form-item label="关键词" prop="keywords">
-              <el-input v-model="formData.keywords" type="text" autocomplete="off" v-show="false"/>
-              <word-input :tags.sync="formData.keywords"></word-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="排序" prop="sort">
-              <el-input v-model.number="formData.sort" type="number" :min="0" :max="9999999" autocomplete="off"/>
+          <el-col :span="16">
+            <el-form-item label="分类名称" prop="name">
+              <el-input v-model="formData.name" type="text" autocomplete="off"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
+            <el-form-item label="标签" prop="tags">
+              <el-input v-model="formData.tags" type="text" autocomplete="off" v-show="false"/>
+              <word-input :tags.sync="formData.tags"></word-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="是否显示" prop="onshow">
+              <el-radio v-model="formData.onshow" :label="1">显示</el-radio>
+              <el-radio v-model="formData.onshow" :label="0">隐藏</el-radio>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="16">
             <el-form-item label="描述" prop="description">
               <el-input v-model="formData.description" type="textarea" :maxlength="200" autocomplete="off" :rows="4"/>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="缩略图" prop="thumbnail">
-          <crop :img.sync="formData.thumbnail"></crop>
-        </el-form-item>
       </div>
     </el-form>
   </div>
@@ -42,7 +47,7 @@ import { create, update, details, list } from '@/api/article-category'
 
 export default {
   name: 'ArticleCategoryDetails',
-  components: { Sticky, WordInput, Crop },
+  components: { Sticky, WordInput },
   props: {
     isEdit: {
       type: Boolean,
@@ -55,14 +60,15 @@ export default {
       rules: {
         name: [
           { required: true, trigger: 'blur', message: '请输入文章分类名称' },
-          { min: 2, trigger: 'blur', message: '文章分类名称至少2个字符' }
+          { min: 2, trigger: 'blur', message: '文章分类名称至少2个字符' },
+          { max: 30, trigger: 'blur', message: '文章分类名称至多30个字符' }
         ],
-        sort: [
-          { type:"number", min: 0, trigger: 'blur', message: '排序最小为0' },
-          { type:"number", max: 9999999, trigger: 'blur', message: '排序最大为9999999' },
+        tags: [
+          { min: 1, trigger: 'blur', message: '文章分类名称至少1个字符' },
+          { max: 200, trigger: 'blur', message: '文章分类名称至多200个字符' }
         ],
         description: [
-          { min: 10, trigger: 'blur', message: '描述至少10个字符' },
+          { min: 2, trigger: 'blur', message: '描述至少2个字符' },
           { max: 200, trigger: 'blur', message: '描述至多200个字符' }
         ]
       },
@@ -70,11 +76,9 @@ export default {
       formData: {
         id: '',
         name: '', // 名称
-        parent_id: 0, // 父id
-        keywords: "", // 关键词
+        tags: "", // 标签
         description: "", // 描述
-        sort: 0, // 排序，数字越大越靠前
-        thumbnail: '' // 缩略图地址
+        onshow: 1 // 是否显示
       },
     }
   },
@@ -82,14 +86,6 @@ export default {
     this.load()
   },
   methods: {
-    // 根据等级计算属性，给属性前面加 —
-    categoryName(item) {
-      let str = ""
-      for (let i = 1; i < item.lv; i++) {
-        str += " — "
-      }
-      return str + item.name
-    },
     // 初始化数据
     load() {
       if (this.isEdit) {

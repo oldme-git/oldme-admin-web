@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 创建管理员组
 export function create(data) {
   return request({
-    url: "/article_category",
+    url: "/v1/article/group/create",
     method: "post",
     data
   })
@@ -12,8 +12,8 @@ export function create(data) {
 // 修改管理员组
 export function update(id, data) {
   return request({
-    url: "/article_category/" + id,
-    method: "put",
+    url: "/v1/article/group/update/" + id,
+    method: "post",
     data
   })
 }
@@ -21,7 +21,7 @@ export function update(id, data) {
 // 获取管理员组列表
 export function list() {
   return request({
-    url: "/article_category",
+    url: "/v1/article/group/list",
     method: "get"
   })
 }
@@ -29,7 +29,7 @@ export function list() {
 // 获取管理员组详情
 export function details(id) {
   return request({
-    url: "/article_category/" + id,
+    url: "/v1/article/group/show/" + id,
     method: "get"
   })
 }
@@ -37,7 +37,7 @@ export function details(id) {
 // 删除管理员组
 export function del(id) {
   return request({
-    url: "/article_category/" + id,
-    method: "delete"
+    url: "/v1/article/group/delete/" + id,
+    method: "post"
   })
 }

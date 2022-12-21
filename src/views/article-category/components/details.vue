@@ -8,27 +8,6 @@
       <div class="form-container">
         <el-row>
           <el-col :span="8">
-            <el-form-item label="文章分类名称" prop="name">
-              <el-input v-model="formData.name" type="text" :maxlength="50" autocomplete="off"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="父分类" prop="parent_id">
-              <el-select class="w-100" v-model="formData.parent_id" placeholder="请选择">
-                <el-option label="顶级分类" :value="0"></el-option>
-                <el-option
-                    v-for="item in categoryList"
-                    :key="item.id"
-                    :label="categoryName(item)"
-                    :value="item.id"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
             <el-form-item label="关键词" prop="keywords">
               <el-input v-model="formData.keywords" type="text" autocomplete="off" v-show="false"/>
               <word-input :tags.sync="formData.keywords"></word-input>
@@ -97,8 +76,6 @@ export default {
         sort: 0, // 排序，数字越大越靠前
         thumbnail: '' // 缩略图地址
       },
-      // 文章分组列表
-      categoryList: []
     }
   },
   created() {
@@ -115,10 +92,6 @@ export default {
     },
     // 初始化数据
     load() {
-      list().then(({ data }) => {
-        this.categoryList = data
-      })
-
       if (this.isEdit) {
         // 如果是编辑状态下，则渲染数据
         const id = this.$route.params.id

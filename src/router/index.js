@@ -36,53 +36,53 @@ export const constantRoutes = [
     }]
   },
 
-  {
-    path: '/admin_group',
-    component: Layout,
-    redirect: '/admin_group/list',
-    meta: { title: '管理员组', icon: 'el-icon-s-check' },
-    children: [{
-      path: 'add',
-      name: 'AdminGroupAdd',
-      component: () => import('@/views/admin-group/add'),
-      meta: { title: '创建管理员组' }
-    }, {
-      path: 'list',
-      name: 'AdminGroupList',
-      component: () => import('@/views/admin-group/list'),
-      meta: { title: '管理员组列表' }
-    }, {
-      path: 'edit/:id(\\d+)',
-      name: 'AdminGroupEdit',
-      component: () => import('@/views/admin-group/edit'),
-      meta: { title: '编辑管理员组', activeMenu: '/admin_group/list' },
-      hidden: true
-    }]
-  },
-
-  {
-    path: '/admin',
-    component: Layout,
-    redirect: '/admin/list',
-    meta: { title: '管理员', icon: 'el-icon-user-solid' },
-    children: [{
-      path: 'add',
-      name: 'AdminAdd',
-      component: () => import('@/views/admin/add'),
-      meta: { title: '新增管理员' }
-    }, {
-      path: 'list',
-      name: 'AdminList',
-      component: () => import('@/views/admin/list'),
-      meta: { title: '管理员列表' }
-    }, {
-      path: 'edit/:id(\\d+)',
-      name: 'AdminEdit',
-      component: () => import('@/views/admin/edit'),
-      meta: { title: '编辑管理员', activeMenu: '/admin/list' },
-      hidden: true
-    }]
-  },
+  // {
+  //   path: '/admin_group',
+  //   component: Layout,
+  //   redirect: '/admin_group/list',
+  //   meta: { title: '管理员组', icon: 'el-icon-s-check' },
+  //   children: [{
+  //     path: 'add',
+  //     name: 'AdminGroupAdd',
+  //     component: () => import('@/views/admin-group/add'),
+  //     meta: { title: '创建管理员组' }
+  //   }, {
+  //     path: 'list',
+  //     name: 'AdminGroupList',
+  //     component: () => import('@/views/admin-group/list'),
+  //     meta: { title: '管理员组列表' }
+  //   }, {
+  //     path: 'edit/:id(\\d+)',
+  //     name: 'AdminGroupEdit',
+  //     component: () => import('@/views/admin-group/edit'),
+  //     meta: { title: '编辑管理员组', activeMenu: '/admin_group/list' },
+  //     hidden: true
+  //   }]
+  // },
+  //
+  // {
+  //   path: '/admin',
+  //   component: Layout,
+  //   redirect: '/admin/list',
+  //   meta: { title: '管理员', icon: 'el-icon-user-solid' },
+  //   children: [{
+  //     path: 'add',
+  //     name: 'AdminAdd',
+  //     component: () => import('@/views/admin/add'),
+  //     meta: { title: '新增管理员' }
+  //   }, {
+  //     path: 'list',
+  //     name: 'AdminList',
+  //     component: () => import('@/views/admin/list'),
+  //     meta: { title: '管理员列表' }
+  //   }, {
+  //     path: 'edit/:id(\\d+)',
+  //     name: 'AdminEdit',
+  //     component: () => import('@/views/admin/edit'),
+  //     meta: { title: '编辑管理员', activeMenu: '/admin/list' },
+  //     hidden: true
+  //   }]
+  // },
 
   {
     path: '/article_category',

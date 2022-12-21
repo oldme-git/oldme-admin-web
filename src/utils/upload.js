@@ -10,6 +10,6 @@ export function url() {
 // 上传头
 export function header() {
   return {
-    Authorization: "Bearer " + getToken()
+    Authorization: getToken()
   }
 }

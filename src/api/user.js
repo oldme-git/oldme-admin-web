@@ -20,7 +20,7 @@ export function logout() {
 // 获取用户信息
 export function getInfo() {
   return request({
-    url: "/account",
+    url: "/v1/info",
     method: "get"
   })
 }

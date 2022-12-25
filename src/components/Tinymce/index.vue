@@ -13,7 +13,7 @@ import plugins from './plugins'
 import toolbar from './toolbar'
 import load from './dynamicLoadScript'
 
-const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
+const tinymceCDN = 'https://unpkg.com/tinymce-all-in-one@4.9.3/tinymce.min.js'
 
 export default {
   name: 'Tinymce',
@@ -166,7 +166,7 @@ export default {
       window.tinymce.get(this.tinymceId).getContent()
     },
     imageSuccessCBK(arr) {
-      arr.forEach(v => window.tinymce.get(this.tinymceId).insertContent(`<img class="tinymce-rich-img" src="${v.url}" >`))
+      arr.forEach(v => window.tinymce.get(this.tinymceId).insertContent(`<img class="tinymce-rich-img" src="${v.url.path}" >`))
     }
   }
 }

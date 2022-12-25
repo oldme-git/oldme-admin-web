@@ -1,6 +1,6 @@
 {
   "name": "oldme-admin-web",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "基于vue-element-admin的后台前端页面",
   "scripts": {
     "dev": "vue-cli-service serve",

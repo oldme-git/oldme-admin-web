@@ -7,14 +7,14 @@
     </el-button>
     <el-dialog :visible.sync="dialogVisible">
       <el-upload
-          :multiple="true"
+          :multiple="false"
           :file-list="fileList"
           :show-file-list="true"
           :on-remove="handleRemove"
           :on-success="handleSuccess"
           :before-upload="beforeUpload"
           class="editor-slide-upload"
-          name="img"
+          name="file"
           :action="action"
           :headers="header"
           list-type="picture-card"

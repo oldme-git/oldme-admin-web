@@ -4,7 +4,7 @@
       <el-form>
         <el-row type="flex" align="middle">
           <el-col :span="4">
-            <el-select v-model="param.cate_id">
+            <el-select v-model="param.grpId">
               <el-option :value="null">请选择</el-option>
               <el-option
                   v-for="item in clist"
@@ -16,19 +16,7 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <el-input v-model="param.search" placeholder="搜索标题、作者、关键词、简介"></el-input>
-          </el-col>
-          <el-col :span="3" :offset="1">
-            <el-radio-group v-model="param.publish">
-              <el-radio :label="1">发布</el-radio>
-              <el-radio :label="0">未发布</el-radio>
-            </el-radio-group>
-          </el-col>
-          <el-col :span="3" :offset="1">
-            <el-radio-group v-model="param.top">
-              <el-radio :label="1">置顶</el-radio>
-              <el-radio :label="0">普通</el-radio>
-            </el-radio-group>
+            <el-input v-model="param.search" placeholder="搜索标题、标签、简介"></el-input>
           </el-col>
           <el-col :span="2" :offset="2">
             <el-button type="primary"  size="mini" icon="el-icon-search" @click="list">查询</el-button>
@@ -41,15 +29,15 @@
       <el-table-column prop="title" label="标题"/>
       <el-table-column label="关键词">
         <template slot-scope="{row}">
-          <el-tag v-for="item in categoryKeywords(row)" :key="item">
+          <el-tag v-for="item in tags(row)" :key="item">
             {{ item }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="sort" label="排序" sortable/>
+      <el-table-column prop="order" label="排序" sortable/>
       <el-table-column label="发布状态">
         <template slot-scope="{row}">
-          <span class="c-success" v-if="row.is_publish == 1">
+          <span class="c-success" v-if="row.onshow == 1">
             <i class="el-icon-circle-check"></i>
             已发布
           </span>
@@ -61,7 +49,7 @@
       </el-table-column>
       <el-table-column label="置顶状态">
         <template slot-scope="{row}">
-          <span class="c-primary" v-if="row.is_top == 1">
+          <span class="c-primary" v-if="row.ontop == 1">
             <i class="el-icon-star-off"></i>
             置顶
           </span>
@@ -79,7 +67,7 @@
                          cancel-button-text="取消"
                          icon="el-icon-info"
                          icon-color="red"
-                         title="确定删除文章分类吗？这会一起删除所有的子类！"
+                         title="确定删除文章吗？"
                          @onConfirm="handle('del', row.id)"
           >
             <el-button type="warning" size="mini" icon="el-icon-delete" slot="reference">删除</el-button>
@@ -118,7 +106,7 @@ export default {
       clist: [],
       // 查询条件配置
       param: {
-        cate_id: null,
+        grpId: null,
         search: '',
         publish: 1,
         top: 0,
@@ -148,14 +136,14 @@ export default {
     articleCateGory() {
       clist().then(response => {
         const { data } = response
-        this.clist = data
+        this.clist = data.list
       })
     },
     // 关键词转换为数组
-    categoryKeywords(item) {
+    tags(item) {
       let arr = []
-      if (item.keywords !== null) {
-        arr = item.keywords.split(',')
+      if (item.tags !== null) {
+        arr = item.tags.split(',')
       }
       return arr
     },

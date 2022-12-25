@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 创建文章
 export function create(data) {
   return request({
-    url: "/article",
+    url: "/v1/article/create",
     method: "post",
     data
   })
@@ -12,8 +12,8 @@ export function create(data) {
 // 修改文章
 export function update(id, data) {
   return request({
-    url: "/article/" + id,
-    method: "put",
+    url: "/v1/article/update/" + id,
+    method: "post",
     data
   })
 }
@@ -21,7 +21,7 @@ export function update(id, data) {
 // 获取文章列表
 export function list(params) {
   return request({
-    url: "/article",
+    url: "/v1/article/list",
     method: "get",
     params
   })
@@ -30,7 +30,7 @@ export function list(params) {
 // 获取文章详情
 export function details(id) {
   return request({
-    url: "/article/" + id,
+    url: "/v1/article/show/" + id,
     method: "get"
   })
 }
@@ -38,7 +38,7 @@ export function details(id) {
 // 删除文章
 export function del(id) {
   return request({
-    url: "/article/" + id,
-    method: "delete"
+    url: "/v1/article/delete/" + id,
+    method: "post"
   })
 }

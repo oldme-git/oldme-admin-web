@@ -36,7 +36,7 @@ export default {
   props: {
     field: {
       type: String,
-      default: 'img'
+      default: 'file'
     },
     url: {
       type: String,
@@ -61,7 +61,7 @@ export default {
     cropSuccess(response) {
       const { code, message, data } = response
       if (code === 0) {
-        this.$emit("update:img", data)
+        this.$emit("update:img", data.path)
       } else {
         this.$notify({
           title: '失败',

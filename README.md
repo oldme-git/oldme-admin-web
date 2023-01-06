@@ -10,3 +10,8 @@
 
 ## 0.0.3
 - 完成后台开发
+
+## 0.0.4
+- 生产环境停用mock，解决和vue-image-crop-upload冲突，导致图片上传失败
+- 降低vue-image-crop-upload版本
+- 修改生产环境的api请求地址

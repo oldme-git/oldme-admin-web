@@ -9,40 +9,39 @@
         <el-row>
           <el-col :span="16">
             <el-form-item label="标题" prop="title">
-              <el-input v-model="formData.title" type="text" autocomplete="off"/>
+              <el-input v-model="formData.title" type="text" autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="文章分类" prop="grpId">
-              <el-select class="w-100" v-model="formData.grpId" placeholder="请选择">
+              <el-select v-model="formData.grpId" class="w-100" placeholder="请选择">
                 <el-option
-                    v-for="item in grpList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                >
-                </el-option>
+                  v-for="item in grpList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="作者" prop="author">
-              <el-input v-model="formData.author" type="text" autocomplete="off"/>
+              <el-input v-model="formData.author" type="text" autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="关键词" prop="tags">
-              <el-input v-model="formData.tags" type="text" autocomplete="off" v-show="false"/>
-              <word-input :tags.sync="formData.tags"></word-input>
+              <el-input v-show="false" v-model="formData.tags" type="text" autocomplete="off" />
+              <word-input :tags.sync="formData.tags" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="排序" prop="order">
-              <el-input v-model.number="formData.order" type="number" :min="0" :max="9999" autocomplete="off"/>
+              <el-input v-model.number="formData.order" type="number" :min="0" :max="9999" autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -63,21 +62,21 @@
         <el-row>
           <el-col :span="16">
             <el-form-item label="描述" prop="description">
-              <el-input v-model="formData.description" type="textarea" :maxlength="200" autocomplete="off" :rows="4"/>
+              <el-input v-model="formData.description" type="textarea" :maxlength="200" autocomplete="off" :rows="4" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="缩略图" prop="thumb">
-              <crop :img.sync="formData.thumb"></crop>
+              <crop :img.sync="formData.thumb" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="内容" prop="content">
-              <tinymce v-model="formData.content"/>
+              <tinymce v-model="formData.content" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -111,19 +110,19 @@ export default {
         grpId: [{ required: true, trigger: 'blur', message: '请选择文章分类' }],
         title: [
           { required: true, trigger: 'blur', message: '请输入文章名称' },
-          { min: 2, max:100, trigger: 'blur', message: '文章名称限制2-100个字符' }
+          { min: 2, max: 100, trigger: 'blur', message: '文章名称限制2-100个字符' }
         ],
         author: [
-          { min: 2, max:30, trigger: 'blur', message: '作者限制2-30个字符' },
+          { min: 2, max: 30, trigger: 'blur', message: '作者限制2-30个字符' }
         ],
         tags: [
-          { min: 2, max:200, trigger: 'blur', message: '关键词限制2-200个字符' },
+          { min: 2, max: 200, trigger: 'blur', message: '关键词限制2-200个字符' }
         ],
         description: [
           { min: 2, max: 200, trigger: 'blur', message: '描述限制10-200个字符' }
         ],
         order: [
-          { type:"number", min:0, max: 9999, trigger: 'blur', message: '排序范围在0-9999' }
+          { type: "number", min: 0, max: 9999, trigger: 'blur', message: '排序范围在0-9999' }
         ]
       },
       // form数据
@@ -147,11 +146,17 @@ export default {
       upload: {
         url: url(),
         header: header()
-      }
+      },
+      // 编辑上传事件
+      autoSaveEvent: null
     }
   },
   created() {
     this.load()
+    this.autoSave()
+  },
+  destroyed() {
+    clearInterval(this.autoSaveEvent)
   },
   methods: {
     load() {
@@ -172,6 +177,14 @@ export default {
         })
       }
     },
+    autoSave() {
+      if (this.isEdit) {
+        // 编辑状况下，每过一分钟保存一次
+        this.autoSaveEvent = setInterval(() => {
+          this.onSubmit()
+        }, 1000 * 60)
+      }
+    },
     // 正式添加
     onSubmit() {
       this.$refs.formData.validate((valid) => {
@@ -187,8 +200,7 @@ export default {
                 duration: 5000,
                 type: 'success'
               })
-              this.onCancel()
-            }).catch(error => {
+            }).catch(() => {
             })
           } else {
             // 添加请求
@@ -201,7 +213,7 @@ export default {
                 type: 'success'
               })
               this.onCancel()
-            }).catch(error => {
+            }).catch(() => {
             })
           }
         }

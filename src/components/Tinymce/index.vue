@@ -13,7 +13,7 @@ import plugins from './plugins'
 import toolbar from './toolbar'
 import load from './dynamicLoadScript'
 
-const tinymceCDN = 'https://unpkg.com/tinymce-all-in-one@4.9.3/tinymce.min.js'
+const tinymceCDN = 'https://npm.elemecdn.com/tinymce-all-in-one@4.9.3/tinymce.min.js'
 
 export default {
   name: 'Tinymce',

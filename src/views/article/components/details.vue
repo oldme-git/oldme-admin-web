@@ -76,7 +76,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="内容" prop="content">
-              <tinymce v-model="formData.content" />
+              <tinymce ref="editor" v-model="formData.content" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -174,6 +174,7 @@ export default {
             data.tags = ""
           }
           this.formData = data
+          this.setContent(data.content)
         })
       }
     },
@@ -184,6 +185,10 @@ export default {
           this.onSubmit()
         }, 1000 * 60)
       }
+    },
+    // 设置富文本数据
+    setContent(val) {
+      this.$refs.editor.setContent(val)
     },
     // 正式添加
     onSubmit() {

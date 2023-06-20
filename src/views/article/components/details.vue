@@ -187,6 +187,7 @@ export default {
     },
     // 正式添加
     onSubmit() {
+      const that = this
       this.$refs.formData.validate((valid) => {
         if (valid) {
           // 发起请求
@@ -200,6 +201,7 @@ export default {
                 duration: 5000,
                 type: 'success'
               })
+              that.load()
             }).catch(() => {
             })
           } else {

@@ -132,6 +132,50 @@ export const constantRoutes = [
     }]
   },
 
+  {
+    path: '/reply',
+    component: Layout,
+    redirect: '/reply/list',
+    meta: { title: '文章回复', icon: 'el-icon-document' },
+    children: [
+      {
+        path: 'add/:id(\\d+)/:aid(\\d+)',
+        name: 'ReplyAdd',
+        component: () => import('@/views/reply/add'),
+        meta: { title: '新增回复' },
+        hidden: true
+      },
+      {
+        path: 'edit/:id(\\d+)',
+        name: 'ReplyEdit',
+        component: () => import('@/views/reply/edit'),
+        meta: { title: '编辑文章回复' },
+        hidden: true
+      }, {
+        path: 'show/:id(\\d+)',
+        name: 'ReplyShow',
+        component: () => import('@/views/reply/show'),
+        meta: { title: '回复详情' },
+        hidden: true
+      }, {
+        path: 'list/check',
+        name: 'ReplyList',
+        component: () => import('@/views/reply/checkList'),
+        meta: { title: '待审核列表' }
+      }, {
+        path: 'list/success',
+        name: 'ReplyList',
+        component: () => import('@/views/reply/successList'),
+        meta: { title: '审核成功列表' }
+      }, {
+        path: 'list/fail',
+        name: 'ReplyList',
+        component: () => import('@/views/reply/failList'),
+        meta: { title: '审核失败列表' }
+      }
+    ]
+  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

@@ -180,10 +180,10 @@ export default {
     },
     autoSave() {
       if (this.isEdit) {
-        // 编辑状况下，每过一分钟保存一次
+        // 编辑状况下，每过一段时间保存一次
         this.autoSaveEvent = setInterval(() => {
-          this.onSubmit()
-        }, 1000 * 60)
+          this.onSubmit(false)
+        }, 3000 * 60)
       }
     },
     // 设置富文本数据
@@ -191,7 +191,7 @@ export default {
       this.$refs.editor.setContent(val)
     },
     // 正式添加
-    onSubmit() {
+    onSubmit(isLoad = true) {
       const that = this
       this.$refs.formData.validate((valid) => {
         if (valid) {
@@ -206,7 +206,9 @@ export default {
                 duration: 5000,
                 type: 'success'
               })
-              that.load()
+              if (isLoad) {
+                that.load()
+              }
             }).catch(() => {
             })
           } else {

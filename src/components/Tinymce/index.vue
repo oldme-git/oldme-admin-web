@@ -1,8 +1,8 @@
 <template>
   <div :class="{fullscreen:fullscreen}" class="tinymce-container" :style="{width:containerWidth}">
-    <textarea :id="tinymceId" class="tinymce-textarea"/>
+    <textarea :id="tinymceId" class="tinymce-textarea" />
     <div class="editor-custom-btn-container">
-      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"/>
+      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
     </div>
   </div>
 </template>
@@ -13,7 +13,7 @@ import plugins from './plugins'
 import toolbar from './toolbar'
 import load from './dynamicLoadScript'
 
-const tinymceCDN = 'https://npm.elemecdn.com/tinymce-all-in-one@4.9.3/tinymce.min.js'
+const tinymceCDN = 'https://cdn.tiny.cloud/1/5uoq9o0830n6dr87cq91vvk1qgtordialwlqq66flzly0c59/tinymce/6/tinymce.min.js'
 
 export default {
   name: 'Tinymce',
@@ -43,7 +43,7 @@ export default {
     height: {
       type: [Number, String],
       required: false,
-      default: 360
+      default: 480
     },
     width: {
       type: [Number, String],
@@ -78,7 +78,7 @@ export default {
     value(val) {
       if (!this.hasChange && this.hasInit) {
         this.$nextTick(() =>
-            window.tinymce.get(this.tinymceId).setContent(val || ''))
+          window.tinymce.get(this.tinymceId).setContent(val || ''))
       }
     }
   },
@@ -195,7 +195,7 @@ export default {
   position: absolute;
   right: 4px;
   top: 4px;
-  /*z-index: 2005;*/
+  z-index: 2005;
 }
 
 .fullscreen .editor-custom-btn-container {

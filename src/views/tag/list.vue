@@ -39,18 +39,6 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <div class="pagination-container">
-      <el-pagination
-        :hide-on-single-page="hidePage"
-        background
-        layout="prev, pager, next, total"
-        :current-page="param.page"
-        :page-size="param.size"
-        :total="data.total"
-        @current-change="pgChange"
-      />
-    </div>
   </div>
 </template>
 Article
@@ -96,19 +84,6 @@ export default {
         this.param.grpId = data.list[0].id
         this.list()
       })
-    },
-    // 关键词转换为数组
-    tags(item) {
-      let arr = []
-      if (item.tags !== null) {
-        arr = item.tags.split(',')
-      }
-      return arr
-    },
-    // 改变页数
-    pgChange(page) {
-      this.param.page = page
-      this.list()
     },
     handle(mod, id) {
       switch (mod) {

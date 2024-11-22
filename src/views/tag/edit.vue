@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import TagDetails from '@/views/tag/components/details'
+import TagDetails from "./components/details"
 
 export default {
   name: "TagEdit",

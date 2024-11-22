@@ -222,6 +222,35 @@ export const constantRoutes = [
       hidden: true
     }]
   },
+  {
+    path: '/sentence',
+    component: Layout,
+    redirect: '/sentence/list',
+    meta: { title: '句子', icon: 'el-icon-document' },
+    children: [{
+      path: 'add',
+      name: 'SentenceAdd',
+      component: () => import('@/views/sentence/add'),
+      meta: { title: '新增句子' }
+    }, {
+      path: 'list',
+      name: 'SentenceList',
+      component: () => import('@/views/sentence/list'),
+      meta: { title: '句子列表' }
+    }, {
+      path: 'show/:id(\\d+)',
+      name: 'SentenceShow',
+      component: () => import('@/views/sentence/show'),
+      meta: { title: '句子详情' },
+      hidden: true
+    }, {
+      path: 'edit/:id(\\d+)',
+      name: 'SentenceEdit',
+      component: () => import('@/views/sentence/edit'),
+      meta: { title: '编辑句子', activeMenu: '/sentence/list' },
+      hidden: true
+    }]
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

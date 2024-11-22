@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import TagGrpDetails from '@/views/tag-grp/components/details'
+import TagGrpDetails from "./components/details"
 
 export default {
   name: "TagGrpEdit",

@@ -9,7 +9,7 @@
         <el-row>
           <el-col :span="16">
             <el-form-item label="分类名称" prop="name">
-              <el-input v-model="formData.name" type="text" autocomplete="off"/>
+              <el-input v-model="formData.name" type="text" autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -45,7 +45,7 @@ export default {
       formData: {
         id: '',
         name: '' // 名称
-      },
+      }
     }
   },
   created() {
@@ -81,6 +81,7 @@ export default {
               })
               this.onCancel()
             }).catch(error => {
+              console.log(error)
             })
           } else {
             // 添加请求
@@ -94,6 +95,7 @@ export default {
               })
               this.onCancel()
             }).catch(error => {
+              console.log(error)
             })
           }
         }

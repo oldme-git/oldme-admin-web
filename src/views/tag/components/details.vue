@@ -9,7 +9,7 @@
         <el-row>
           <el-col :span="16">
             <el-form-item label="名称" prop="name">
-              <el-input v-model="formData.name" type="text" autocomplete="off"/>
+              <el-input v-model="formData.name" type="text" autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -62,7 +62,7 @@ export default {
         grpId: "",
         name: '' // 名称
       },
-      grpList: [],
+      grpList: []
     }
   },
   created() {
@@ -101,6 +101,7 @@ export default {
               })
               this.onCancel()
             }).catch(error => {
+              console.log(error)
             })
           } else {
             // 添加请求
@@ -114,6 +115,7 @@ export default {
               })
               this.onCancel()
             }).catch(error => {
+              console.log(error)
             })
           }
         }

@@ -68,6 +68,7 @@ export default {
         })
         this.load()
       }).catch(error => {
+        console.log(error)
       })
     }
   }

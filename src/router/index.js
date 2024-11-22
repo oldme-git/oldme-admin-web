@@ -199,6 +199,29 @@ export const constantRoutes = [
       hidden: true
     }]
   },
+  {
+    path: '/tag',
+    component: Layout,
+    redirect: '/tag/list',
+    meta: { title: '标签', icon: 'el-icon-document' },
+    children: [{
+      path: 'add',
+      name: 'TagAdd',
+      component: () => import('@/views/tag/add'),
+      meta: { title: '新增标签' }
+    }, {
+      path: 'list',
+      name: 'TagList',
+      component: () => import('@/views/tag/list'),
+      meta: { title: '标签列表' }
+    }, {
+      path: 'edit/:id(\\d+)',
+      name: 'TagEdit',
+      component: () => import('@/views/tag/edit'),
+      meta: { title: '编辑标签', activeMenu: '/tag/list' },
+      hidden: true
+    }]
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

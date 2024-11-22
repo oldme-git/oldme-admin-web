@@ -176,6 +176,30 @@ export const constantRoutes = [
     ]
   },
 
+  {
+    path: '/tag-grp',
+    component: Layout,
+    redirect: '/tag-grp/list',
+    meta: { title: '标签分类', icon: 'el-icon-document' },
+    children: [{
+      path: 'add',
+      name: 'TagGrpAdd',
+      component: () => import('@/views/tag-grp/add'),
+      meta: { title: '新增标签分类' }
+    }, {
+      path: 'list',
+      name: 'TagGrpList',
+      component: () => import('@/views/tag-grp/list'),
+      meta: { title: '标签分类列表' }
+    }, {
+      path: 'edit/:id(\\d+)',
+      name: 'TagGrpEdit',
+      component: () => import('@/views/tag-grp/edit'),
+      meta: { title: '编辑标签分类', activeMenu: '/tag-grp/list' },
+      hidden: true
+    }]
+  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

@@ -190,10 +190,20 @@ export default {
             duration: 5000,
             type: 'success'
           })
-          this.onCancel()
+          // this.onCancel()
+          this.resetFormData()
         }).catch(error => {
           console.log(error)
         })
+      }
+    },
+    // 重置formData
+    resetFormData() {
+      this.formData = {
+        id: '',
+        bookId: 0,
+        tagIds: '',
+        sentence: ""
       }
     },
     // 取消

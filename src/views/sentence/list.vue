@@ -48,27 +48,31 @@
         </el-row>
       </el-form>
     </div>
-    <el-table :data="data.list" border style="width: 100%">
-      <el-table-column prop="id" label="id" />
-      <el-table-column prop="sentence" label="句子" />
-      <el-table-column label="操作">
-        <template slot-scope="{row}">
-          <el-button type="primary" size="mini" icon="el-icon-data-analysis" @click="handle('show', row.id)">查看</el-button>
-          <el-button type="success" size="mini" icon="el-icon-edit" @click="handle('edit', row.id)">编辑</el-button>
-          <el-popconfirm
-            style="margin-left: 10px"
-            confirm-button-text="确定"
-            cancel-button-text="取消"
-            icon="el-icon-info"
-            icon-color="red"
-            title="确定删除吗？"
-            @onConfirm="handle('del', row.id)"
-          >
-            <el-button slot="reference" type="warning" size="mini" icon="el-icon-delete">删除</el-button>
-          </el-popconfirm>
-        </template>
-      </el-table-column>
-    </el-table>
+
+    <el-row :gutter="20" style="width: 80%">
+      <el-col :span="8" v-for="item of data.list" :key="item.id">
+        <el-card class="box-card">
+          <div>
+            <span>{{ item.sentence }}</span>
+          </div>
+          <el-divider></el-divider>
+          <div style="text-align: right">
+            <el-button type="primary" size="mini" icon="el-icon-data-analysis" @click="handle('show', item.id)">查看</el-button>
+            <el-button type="success" size="mini" icon="el-icon-edit" @click="handle('edit', item.id)">编辑</el-button>
+            <el-popconfirm
+              style="margin-left: 10px"
+              confirm-button-text="确定"
+              cancel-button-text="取消"
+              icon="el-icon-info"
+              icon-color="red"
+              title="确定删除吗？"
+              @onConfirm="handle('del', item.id)"
+            ><el-button slot="reference" type="warning" size="mini" icon="el-icon-delete">删除</el-button>
+            </el-popconfirm>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
 
     <div class="pagination-container">
       <el-pagination
@@ -83,7 +87,7 @@
     </div>
   </div>
 </template>
-Article
+
 <script>
 import { list, del } from '@/api/sentence'
 import { list as blist } from '@/api/reading'
@@ -102,7 +106,7 @@ export default {
       param: {
         bookId: 0,
         page: 1,
-        size: 15,
+        size: 30,
         tagIds: ''
       },
       tgList: [],
@@ -212,5 +216,9 @@ export default {
 <style>
 .el-tag + .el-tag {
   margin-left: 10px;
+}
+
+.box-card {
+  margin-bottom: 20px;
 }
 </style>

@@ -39,7 +39,7 @@
         <el-row>
           <el-col :span="16">
             <el-form-item label="">
-              <el-tag v-for="(item, i) in tList" :key="item.id" class="tag-cursor" :type="richColor(i)" @click="chooseTag(item)">{{ item.name }}</el-tag>
+              <el-tag v-for="(item, i) in tList" :key="item.id" class="tag-cursor" effect="dark" :type="richColor(i)" @click="chooseTag(item)">{{ item.name }}</el-tag>
             </el-form-item>
           </el-col>
         </el-row>
@@ -205,6 +205,9 @@ export default {
         tagIds: '',
         sentence: ""
       }
+      this.choseTagGrp = 0
+      this.getTagList()
+      this.choseTagList = []
     },
     // 取消
     onCancel() {

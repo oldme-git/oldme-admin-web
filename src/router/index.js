@@ -180,7 +180,7 @@ export const constantRoutes = [
     path: '/tag-grp',
     component: Layout,
     redirect: '/tag-grp/list',
-    meta: { title: '标签分类', icon: 'el-icon-document' },
+    meta: { title: '标签分类', icon: 'el-icon-price-tag' },
     children: [{
       path: 'add',
       name: 'TagGrpAdd',
@@ -203,7 +203,7 @@ export const constantRoutes = [
     path: '/tag',
     component: Layout,
     redirect: '/tag/list',
-    meta: { title: '标签', icon: 'el-icon-document' },
+    meta: { title: '标签', icon: 'el-icon-collection-tag' },
     children: [{
       path: 'add',
       name: 'TagAdd',
@@ -226,7 +226,7 @@ export const constantRoutes = [
     path: '/sentence',
     component: Layout,
     redirect: '/sentence/list',
-    meta: { title: '句子', icon: 'el-icon-document' },
+    meta: { title: '句子', icon: 'el-icon-notebook-1' },
     children: [{
       path: 'add',
       name: 'SentenceAdd',

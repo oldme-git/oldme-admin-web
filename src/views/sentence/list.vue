@@ -32,9 +32,10 @@
         <br>
         <el-row>
           <el-col :span="20">
-            <el-tag v-for="(item, i) in tList" :key="item.id" class="tag-cursor" :type="richColor(i)" @click="chooseTag(item)">{{ item.name }}</el-tag>
+            <el-tag v-for="(item, i) in tList" :key="item.id" class="tag-cursor" effect="dark" :type="richColor(i)" @click="chooseTag(item)">{{ item.name }}</el-tag>
           </el-col>
         </el-row>
+        <el-divider></el-divider>
         <el-row>
           <el-col :span="20">
             <el-tag
@@ -57,8 +58,8 @@
           </div>
           <el-divider></el-divider>
           <div style="text-align: right">
-            <el-button type="primary" size="mini" icon="el-icon-data-analysis" @click="handle('show', item.id)">查看</el-button>
-            <el-button type="success" size="mini" icon="el-icon-edit" @click="handle('edit', item.id)">编辑</el-button>
+            <el-button type="text" size="mini" icon="el-icon-data-analysis" @click="handle('show', item.id)">查看</el-button>
+            <el-button type="text" size="mini" icon="el-icon-edit" @click="handle('edit', item.id)">编辑</el-button>
             <el-popconfirm
               style="margin-left: 10px"
               confirm-button-text="确定"
@@ -67,7 +68,7 @@
               icon-color="red"
               title="确定删除吗？"
               @onConfirm="handle('del', item.id)"
-            ><el-button slot="reference" type="warning" size="mini" icon="el-icon-delete">删除</el-button>
+            ><el-button slot="reference" type="text" size="mini" icon="el-icon-delete">删除</el-button>
             </el-popconfirm>
           </div>
         </el-card>
@@ -220,5 +221,9 @@ export default {
 
 .box-card {
   margin-bottom: 20px;
+}
+
+.tag-cursor {
+  cursor: pointer;
 }
 </style>

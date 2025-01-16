@@ -25,6 +25,9 @@
               />
             </el-select>
           </el-col>
+          <el-col :span="4" :offset="1">
+            <el-input v-model="param.search" placeholder="搜索" @keyup.enter.native="list" />
+          </el-col>
           <el-col :span="2" :offset="1">
             <el-button type="primary" size="mini" icon="el-icon-search" @click="list">查询</el-button>
           </el-col>
@@ -108,7 +111,8 @@ export default {
         bookId: 0,
         page: 1,
         size: 30,
-        tagIds: ''
+        tagIds: '',
+        search: ''
       },
       tgList: [],
       tList: [],
@@ -125,6 +129,10 @@ export default {
     load() {
       this.getBookList()
       this.getTagGrpList()
+      this.list()
+    },
+    search() {
+      this.param.page = 1
       this.list()
     },
     list() {

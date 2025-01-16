@@ -29,7 +29,7 @@
             <el-input v-model="param.search" placeholder="搜索" @keyup.enter.native="list" />
           </el-col>
           <el-col :span="2" :offset="1">
-            <el-button type="primary" size="mini" icon="el-icon-search" @click="list">查询</el-button>
+            <el-button type="primary" size="mini" icon="el-icon-search" @click="search">查询</el-button>
           </el-col>
         </el-row>
         <br>

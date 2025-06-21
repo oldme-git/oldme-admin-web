@@ -38,7 +38,7 @@
             <el-tag v-for="(item, i) in tList" :key="item.id" class="tag-cursor" effect="dark" :type="richColor(i)" @click="chooseTag(item)">{{ item.name }}</el-tag>
           </el-col>
         </el-row>
-        <el-divider></el-divider>
+        <el-divider />
         <el-row>
           <el-col :span="20">
             <el-tag
@@ -54,11 +54,11 @@
     </div>
 
     <div class="list">
-      <el-card class="box-card" v-for="item of data.list" :key="item.id">
+      <el-card v-for="item of data.list" :key="item.id" class="box-card">
         <div>
           <span>{{ item.sentence }}</span>
         </div>
-        <el-divider></el-divider>
+        <el-divider />
         <div style="text-align: right">
           <el-button type="text" size="mini" icon="el-icon-data-analysis" @click="handle('show', item.id)">查看</el-button>
           <el-button type="text" size="mini" icon="el-icon-edit" @click="handle('edit', item.id)">编辑</el-button>
@@ -222,7 +222,8 @@ export default {
 
 <style lang="scss" scoped>
 .list {
-  column-count: 4;
+  padding-right: 20vw;
+  column-count: 3;
   column-gap: 15px;
 
   .box-card {

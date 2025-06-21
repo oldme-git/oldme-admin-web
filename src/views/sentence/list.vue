@@ -53,30 +53,28 @@
       </el-form>
     </div>
 
-    <el-row :gutter="20" style="width: 80%">
-      <el-col :span="8" v-for="item of data.list" :key="item.id">
-        <el-card class="box-card">
-          <div>
-            <span>{{ item.sentence }}</span>
-          </div>
-          <el-divider></el-divider>
-          <div style="text-align: right">
-            <el-button type="text" size="mini" icon="el-icon-data-analysis" @click="handle('show', item.id)">查看</el-button>
-            <el-button type="text" size="mini" icon="el-icon-edit" @click="handle('edit', item.id)">编辑</el-button>
-            <el-popconfirm
-              style="margin-left: 10px"
-              confirm-button-text="确定"
-              cancel-button-text="取消"
-              icon="el-icon-info"
-              icon-color="red"
-              title="确定删除吗？"
-              @onConfirm="handle('del', item.id)"
-            ><el-button slot="reference" type="text" size="mini" icon="el-icon-delete">删除</el-button>
-            </el-popconfirm>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
+    <div class="list">
+      <el-card class="box-card" v-for="item of data.list" :key="item.id">
+        <div>
+          <span>{{ item.sentence }}</span>
+        </div>
+        <el-divider></el-divider>
+        <div style="text-align: right">
+          <el-button type="text" size="mini" icon="el-icon-data-analysis" @click="handle('show', item.id)">查看</el-button>
+          <el-button type="text" size="mini" icon="el-icon-edit" @click="handle('edit', item.id)">编辑</el-button>
+          <el-popconfirm
+            style="margin-left: 10px"
+            confirm-button-text="确定"
+            cancel-button-text="取消"
+            icon="el-icon-info"
+            icon-color="red"
+            title="确定删除吗？"
+            @onConfirm="handle('del', item.id)"
+          ><el-button slot="reference" type="text" size="mini" icon="el-icon-delete">删除</el-button>
+          </el-popconfirm>
+        </div>
+      </el-card>
+    </div>
 
     <div class="pagination-container">
       <el-pagination
@@ -110,7 +108,7 @@ export default {
       param: {
         bookId: 0,
         page: 1,
-        size: 30,
+        size: 50,
         tagIds: '',
         search: ''
       },
@@ -222,13 +220,17 @@ export default {
 }
 </script>
 
-<style>
-.el-tag + .el-tag {
-  margin-left: 10px;
-}
+<style lang="scss" scoped>
+.list {
+  column-count: 4;
+  column-gap: 15px;
 
-.box-card {
-  margin-bottom: 20px;
+  .box-card {
+    break-inside: avoid;
+    margin-bottom: 15px;
+    display: inline-block;
+    width: 100%;
+  }
 }
 
 .tag-cursor {

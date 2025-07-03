@@ -5,7 +5,7 @@
         <el-row type="flex" align="middle">
           <el-col :span="4">
             <el-select v-model="param.bookId">
-              <el-option :value="0" label="无来源" />
+              <el-option :value="0" label="无来源"/>
               <el-option
                 v-for="item in blist"
                 :key="item.id"
@@ -16,7 +16,7 @@
           </el-col>
           <el-col :span="4">
             <el-select v-model="choseTagGrp" class="w-100" @change="getTagList">
-              <el-option :value="0" label="请选择标签分类" />
+              <el-option :value="0" label="请选择标签分类"/>
               <el-option
                 v-for="item in tgList"
                 :key="item.id"
@@ -26,7 +26,7 @@
             </el-select>
           </el-col>
           <el-col :span="4" :offset="1">
-            <el-input v-model="param.search" placeholder="搜索" @keyup.enter.native="list" />
+            <el-input v-model="param.search" placeholder="搜索" @keyup.enter.native="list"/>
           </el-col>
           <el-col :span="2" :offset="1">
             <el-button type="primary" size="mini" icon="el-icon-search" @click="search">查询</el-button>
@@ -35,10 +35,12 @@
         <br>
         <el-row>
           <el-col :span="20">
-            <el-tag v-for="(item, i) in tList" :key="item.id" class="tag-cursor" effect="dark" :type="richColor(i)" @click="chooseTag(item)">{{ item.name }}</el-tag>
+            <el-tag v-for="(item, i) in tList" :key="item.id" class="tag-cursor" effect="dark" :type="richColor(i)"
+                    @click="chooseTag(item)">{{ item.name }}
+            </el-tag>
           </el-col>
         </el-row>
-        <el-divider />
+        <el-divider/>
         <el-row>
           <el-col :span="20">
             <el-tag
@@ -47,7 +49,8 @@
               effect="dark"
               closable
               @close="delChoseTag(item)"
-            >{{ item.name }}</el-tag>
+            >{{ item.name }}
+            </el-tag>
           </el-col>
         </el-row>
       </el-form>
@@ -58,9 +61,10 @@
         <div>
           <span>{{ item.sentence }}</span>
         </div>
-        <el-divider />
+        <el-divider/>
         <div style="text-align: right">
-          <el-button type="text" size="mini" icon="el-icon-data-analysis" @click="handle('show', item.id)">查看</el-button>
+          <el-button type="text" size="mini" icon="el-icon-data-analysis" @click="handle('show', item.id)">查看
+          </el-button>
           <el-button type="text" size="mini" icon="el-icon-edit" @click="handle('edit', item.id)">编辑</el-button>
           <el-popconfirm
             style="margin-left: 10px"
@@ -70,7 +74,8 @@
             icon-color="red"
             title="确定删除吗？"
             @onConfirm="handle('del', item.id)"
-          ><el-button slot="reference" type="text" size="mini" icon="el-icon-delete">删除</el-button>
+          >
+            <el-button slot="reference" type="text" size="mini" icon="el-icon-delete">删除</el-button>
           </el-popconfirm>
         </div>
       </el-card>
@@ -87,17 +92,28 @@
         @current-change="pgChange"
       />
     </div>
+
+    <el-dialog
+      :visible.sync="dialogShow"
+      width="30%">
+      <sentence-show :id="detailsId"></sentence-show>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogShow = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { list, del } from '@/api/sentence'
-import { list as blist } from '@/api/reading'
-import { list as tglist } from "@/api/tag-grp"
-import { list as tlist } from "@/api/tag"
+import {list, del} from '@/api/sentence'
+import {list as blist} from '@/api/reading'
+import {list as tglist} from "@/api/tag-grp"
+import {list as tlist} from "@/api/tag"
+import SentenceShow from "@/views/sentence/components/show.vue"
 
 export default {
   name: 'SentenceList',
+  components: { SentenceShow },
   data() {
     return {
       data: [],
@@ -117,7 +133,10 @@ export default {
       bList: [],
 
       choseTagGrp: 0,
-      choseTagList: []
+      choseTagList: [],
+
+      dialogShow: false,
+      detailsId: 0
     }
   },
   mounted() {
@@ -136,19 +155,19 @@ export default {
     list() {
       this.param.tagIds = this.choseTagList.map(item => item.id)
       // 加载数据
-      list(this.param).then(({ data }) => {
+      list(this.param).then(({data}) => {
         this.data = data
       })
     },
     // 加载书籍
     getBookList() {
       blist().then(response => {
-        const { data } = response
+        const {data} = response
         this.blist = data.list
       })
     },
     getTagGrpList() {
-      tglist().then(({ data }) => {
+      tglist().then(({data}) => {
         this.tgList = data.list
         this.getTagList()
       })
@@ -160,7 +179,7 @@ export default {
       }
       tlist({
         grpId: this.choseTagGrp
-      }).then(({ data }) => {
+      }).then(({data}) => {
         this.tList = data.list
       })
     },
@@ -183,7 +202,7 @@ export default {
       switch (mod) {
         // 查看
         case 'show':
-          this.$router.push('/sentence/show/' + id)
+          this.show(id)
           break
         // 编辑
         case 'edit':
@@ -195,11 +214,15 @@ export default {
           break
       }
     },
+    show(id) {
+      this.dialogShow = true
+      this.detailsId = id
+    },
     // 删除
     del(id) {
       // 执行删除
       del(id).then(response => {
-        const { message } = response
+        const {message} = response
         this.$notify({
           title: message,
           message: '删除成功',

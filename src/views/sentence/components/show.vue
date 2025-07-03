@@ -19,12 +19,6 @@
         >{{ item.name }}</el-tag>
       </p>
     </div>
-    <div class="item">
-      <p class="title">操作： </p>
-      <p class="value">
-        <el-button @click="onCancel">返 回</el-button>
-      </p>
-    </div>
   </div>
 </template>
 
@@ -40,15 +34,21 @@ export default {
       bList: [],
     }
   },
+  // 接受父组件的id
+  props: ['id'],
+  // 监控id
+  watch: {
+    id() {
+      this.load()
+    }
+  },
   mounted() {
-    this.id = this.$route.params.id
+    this.getBookList()
     this.load()
   },
   methods: {
     load() {
-      // 文章回复列表
       this.show()
-      this.getBookList()
     },
     show() {
       // 加载数据
@@ -71,19 +71,12 @@ export default {
     },
     richColor(i) {
       return ["", 'success', 'info', 'warning', 'danger'][i % 5]
-    },
-    onCancel() {
-      this.$router.push('/sentence/list')
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.wrap {
-  padding: 20px 60px;
-}
-
 .item {
   display: flex;
   position: relative;
@@ -100,6 +93,14 @@ export default {
     height: 1px;
     background: #409eff;
     bottom: 0;
+  }
+
+  .el-tag {
+    margin-right: 10px;
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
 }
 </style>

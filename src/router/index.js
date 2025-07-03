@@ -238,12 +238,6 @@ export const constantRoutes = [
       component: () => import('@/views/sentence/list'),
       meta: { title: '句子列表' }
     }, {
-      path: 'show/:id(\\d+)',
-      name: 'SentenceShow',
-      component: () => import('@/views/sentence/show'),
-      meta: { title: '句子详情' },
-      hidden: true
-    }, {
       path: 'edit/:id(\\d+)',
       name: 'SentenceEdit',
       component: () => import('@/views/sentence/edit'),

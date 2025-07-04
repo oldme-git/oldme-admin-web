@@ -2,7 +2,7 @@
   <div class="wrap">
     <div class="item">
       <p class="title">句子： </p>
-      <p class="value">{{ data.sentence }}</p>
+      <p class="value" v-html="sentence"></p>
     </div>
     <div class="item">
       <p class="title">来源书籍： </p>
@@ -45,6 +45,16 @@ export default {
   mounted() {
     this.getBookList()
     this.load()
+  },
+  computed: {
+    sentence() {
+      try {
+        // 将 \r\n 或者 \n 转换为换行
+        return this.data.sentence.replace(/(\r\n|\n)/g, "<br>")
+      } catch (e) {
+        return this.data.sentence
+      }
+    }
   },
   methods: {
     load() {

@@ -2,7 +2,7 @@
   <div class="wrap">
     <div class="item">
       <p class="title">句子： </p>
-      <p class="value" v-html="sentence"></p>
+      <p class="value sentence" v-html="sentence"></p>
     </div>
     <div class="item">
       <p class="title">来源书籍： </p>
@@ -111,6 +111,10 @@ export default {
     &:last-child {
       margin-right: 0;
     }
+  }
+
+  .sentence {
+    line-height: 1.5;
   }
 }
 </style>

@@ -86,6 +86,7 @@ export default {
   },
   data() {
     return {
+      prevQuery: {},
       // form数据
       formData: {
         id: '',
@@ -102,6 +103,7 @@ export default {
     }
   },
   created() {
+    this.prevQuery = this.$route.query
     this.load()
   },
   methods: {
@@ -200,9 +202,9 @@ export default {
     // 重置formData
     resetFormData() {
       this.formData = {
-        id: '',
-        bookId: 0,
-        tagIds: '',
+        id: "",
+        bookId: this.formData.bookId,
+        tagIds: "",
         sentence: ""
       }
       this.choseTagGrp = 0
@@ -211,7 +213,10 @@ export default {
     },
     // 取消
     onCancel() {
-      this.$router.push('/sentence/list')
+      this.$router.push({
+        path: '/sentence/list',
+        query: this.prevQuery
+      })
     }
   }
 }

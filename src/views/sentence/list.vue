@@ -5,7 +5,7 @@
         <el-row type="flex" align="middle">
           <el-col :span="4">
             <el-select v-model="param.bookId">
-              <el-option :value="0" label="无来源"/>
+              <el-option :value="0" label="无来源" />
               <el-option
                 v-for="item in blist"
                 :key="item.id"
@@ -16,7 +16,7 @@
           </el-col>
           <el-col :span="4">
             <el-select v-model="choseTagGrp" class="w-100" @change="getTagList">
-              <el-option :value="0" label="请选择标签分类"/>
+              <el-option :value="0" label="请选择标签分类" />
               <el-option
                 v-for="item in tgList"
                 :key="item.id"
@@ -26,7 +26,7 @@
             </el-select>
           </el-col>
           <el-col :span="4" :offset="1">
-            <el-input v-model="param.search" placeholder="搜索" @keyup.enter.native="list"/>
+            <el-input v-model="param.search" placeholder="搜索" @keyup.enter.native="list" />
           </el-col>
           <el-col :span="2" :offset="1">
             <el-button type="primary" size="mini" icon="el-icon-search" @click="search">查询</el-button>
@@ -35,12 +35,18 @@
         <br>
         <el-row>
           <el-col :span="20">
-            <el-tag v-for="(item, i) in tList" :key="item.id" class="tag-cursor" effect="dark" :type="richColor(i)"
-                    @click="chooseTag(item)">{{ item.name }}
+            <el-tag
+              v-for="(item, i) in tList"
+              :key="item.id"
+              class="tag-cursor"
+              effect="dark"
+              :type="richColor(i)"
+              @click="chooseTag(item)"
+            >{{ item.name }}
             </el-tag>
           </el-col>
         </el-row>
-        <el-divider/>
+        <el-divider />
         <el-row>
           <el-col :span="20">
             <el-tag
@@ -61,7 +67,7 @@
         <div>
           <span>{{ item.sentence }}</span>
         </div>
-        <el-divider/>
+        <el-divider />
         <div style="text-align: right">
           <el-button type="text" size="mini" icon="el-icon-data-analysis" @click="handle('show', item.id)">查看
           </el-button>
@@ -95,8 +101,9 @@
 
     <el-dialog
       :visible.sync="dialogShow"
-      width="30%">
-      <sentence-show :id="detailsId"></sentence-show>
+      width="30%"
+    >
+      <sentence-show :id="detailsId" />
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogShow = false">确 定</el-button>
       </span>
@@ -105,7 +112,7 @@
 </template>
 
 <script>
-import {list, del} from '@/api/sentence'
+import {del, list} from '@/api/sentence'
 import {list as blist} from '@/api/reading'
 import {list as tglist} from "@/api/tag-grp"
 import {list as tlist} from "@/api/tag"
@@ -140,6 +147,29 @@ export default {
     }
   },
   mounted() {
+    try {
+      const query = this.$route.query
+
+      if (query.p != null) {
+        const param = JSON.parse(query.p) || {}
+        if (param != null) {
+          this.param = {
+            page: parseInt(param.page) || 1,
+            size: parseInt(param.size) || 50,
+            bookId: parseInt(param.bookId) || 0,
+            tagIds: param.tagIds || '',
+            search: param.search || ''
+          }
+        }
+      }
+
+      if (query.cl != null) {
+        this.choseTagList = JSON.parse(query.cl) || []
+      }
+    } catch (e) {
+      console.log(e)
+    }
+
     this.load()
   },
   methods: {
@@ -155,19 +185,19 @@ export default {
     list() {
       this.param.tagIds = this.choseTagList.map(item => item.id)
       // 加载数据
-      list(this.param).then(({data}) => {
+      list(this.param).then(({ data }) => {
         this.data = data
       })
     },
     // 加载书籍
     getBookList() {
       blist().then(response => {
-        const {data} = response
+        const { data } = response
         this.blist = data.list
       })
     },
     getTagGrpList() {
-      tglist().then(({data}) => {
+      tglist().then(({ data }) => {
         this.tgList = data.list
         this.getTagList()
       })
@@ -179,7 +209,7 @@ export default {
       }
       tlist({
         grpId: this.choseTagGrp
-      }).then(({data}) => {
+      }).then(({ data }) => {
         this.tList = data.list
       })
     },
@@ -206,7 +236,14 @@ export default {
           break
         // 编辑
         case 'edit':
-          this.$router.push('/sentence/edit/' + id)
+          // 将param携带
+          this.$router.push({
+            path: '/sentence/edit/' + id,
+            query: {
+              p: JSON.stringify(this.param),
+              cl: JSON.stringify(this.choseTagList)
+            }
+          })
           break
         // 删除
         case 'del':
@@ -222,7 +259,7 @@ export default {
     del(id) {
       // 执行删除
       del(id).then(response => {
-        const {message} = response
+        const { message } = response
         this.$notify({
           title: message,
           message: '删除成功',

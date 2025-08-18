@@ -9,7 +9,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="来源书籍" prop="bookId">
-              <el-select v-model="formData.bookId" class="w-100">
+              <el-select v-model="formData.bookId" class="w-100" filterable>
                 <el-option :value="0" label="无来源" />
                 <el-option
                   v-for="item in bList"

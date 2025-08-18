@@ -4,7 +4,7 @@
       <el-form>
         <el-row type="flex" align="middle">
           <el-col :span="4">
-            <el-select v-model="param.bookId">
+            <el-select v-model="param.bookId" filterable>
               <el-option :value="0" label="无来源" />
               <el-option
                 v-for="item in blist"

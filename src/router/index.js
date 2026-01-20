@@ -177,6 +177,30 @@ export const constantRoutes = [
   },
 
   {
+    path: '/reading',
+    component: Layout,
+    redirect: '/reading/list',
+    meta: { title: '读书日记', icon: 'el-icon-price-tag' },
+    children: [{
+      path: 'add',
+      name: 'ReadingAdd',
+      component: () => import('@/views/reading/add'),
+      meta: { title: '新增书本' }
+    }, {
+      path: 'list',
+      name: 'ReadingList',
+      component: () => import('@/views/reading/list'),
+      meta: { title: '书本列表' }
+    }, {
+      path: 'edit/:id(\\d+)',
+      name: 'ReadingEdit',
+      component: () => import('@/views/reading/edit'),
+      meta: { title: '编辑书本', activeMenu: '/reading/list' },
+      hidden: true
+    }]
+  },
+
+  {
     path: '/tag-grp',
     component: Layout,
     redirect: '/tag-grp/list',

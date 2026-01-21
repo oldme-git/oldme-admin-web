@@ -180,7 +180,7 @@ export const constantRoutes = [
     path: '/reading',
     component: Layout,
     redirect: '/reading/list',
-    meta: { title: '读书日记', icon: 'el-icon-price-tag' },
+    meta: { title: '读书日记', icon: 'el-icon-notebook-1' },
     children: [{
       path: 'add',
       name: 'ReadingAdd',

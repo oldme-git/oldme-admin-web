@@ -250,7 +250,7 @@ export const constantRoutes = [
     path: '/sentence',
     component: Layout,
     redirect: '/sentence/list',
-    meta: { title: '句子', icon: 'el-icon-notebook-1' },
+    meta: { title: '句子', icon: 'el-icon-collection' },
     children: [{
       path: 'add',
       name: 'SentenceAdd',

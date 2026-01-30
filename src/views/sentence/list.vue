@@ -14,7 +14,7 @@
               />
             </el-select>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="4" :offset="1">
             <el-select v-model="choseTagGrp" class="w-100" @change="getTagList">
               <el-option :value="0" label="请选择标签分类" />
               <el-option
@@ -101,7 +101,7 @@
 
     <el-dialog
       :visible.sync="dialogShow"
-      width="30%"
+      width="60%"
     >
       <sentence-show :id="detailsId" />
       <span slot="footer" class="dialog-footer">
@@ -282,8 +282,7 @@ export default {
 
 <style lang="scss" scoped>
 .list {
-  padding-right: 20vw;
-  column-count: 3;
+  column-count: 4;
   column-gap: 15px;
 
   .box-card {
